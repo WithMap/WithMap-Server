@@ -1,5 +1,9 @@
 package com.seoulapp.withmap.service;
 
-public class UserService {
+import com.seoulapp.withmap.model.User;
+
+public interface UserService {
+	
+	User getUser(int userId);
 
 }
