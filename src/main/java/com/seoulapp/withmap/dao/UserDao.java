@@ -6,6 +6,6 @@ public interface  UserDao {
 
 	void insert(User user);
 	void update(User user);
-	void get(User user);
+	User get(int userId);
 	
 }
