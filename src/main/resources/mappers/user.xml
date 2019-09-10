@@ -36,7 +36,7 @@
 			, gender = #{gender}
 			, year = #{year}
 			, disable = #{disable}
-			, point - #{point}
+			, point = #{point}
 		WHERE id = #{id}
 	</update>
 
