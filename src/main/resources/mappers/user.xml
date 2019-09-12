@@ -3,8 +3,7 @@
 <mapper namespace="com.seoulapp.withmap.user">
 	<insert id="insert" parameterType="User"> 
 		INSERT INTO user (
-			id
-			, password
+			password
 			, name
 			, email
 			, gender
@@ -14,14 +13,13 @@
 			, crt_date
 			, upd_date
 		) values ( 
-		 	#{id}
-			, #{password}
+			#{password}
 			, #{name}
 			, #{email}
-			, #{point}
 			, #{gender}
 			, #{year}
 			, #{disable}
+			, #{point}
 		 	, current_timestamp
 		 	, current_timestamp
 		 ) 
