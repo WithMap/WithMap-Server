@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seoulapp.withmap.pinImage">
+
+	<resultMap id="PinImageMap" type="PinImage">
+		<result property="pinId" column="pin_id"/>
+		<result property="imagePath" column="image_path"/>
+		<result property="state" column="state"/>
+		<result property="crtDate" column="crt_date"/>
+		<result property="updDate" column="upd_date"/>
+	</resultMap>
+		
+	<select id="selectList" parameterType="int" resultMap="PinImageMap">
+		SELECT *
+		FROM pin_image
+		where pin_id = #{pinId};
+	</select>
+	
+	<insert id="insert" parameterType="Pin"> 
+		INSERT INTO pin (
+			pin_id
+			, image_path
+			, state
+			, crt_date
+			, upd_date
+		) values ( 
+		 	#{pinId}
+			, #{imagePath}
+			, #{state}
+		 	, current_timestamp
+		 	, current_timestamp
+		 ) 
+	 </insert>
+
+</mapper>

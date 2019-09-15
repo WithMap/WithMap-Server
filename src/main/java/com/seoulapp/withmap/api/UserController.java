@@ -13,7 +13,7 @@ import com.seoulapp.withmap.model.User;
 import com.seoulapp.withmap.service.UserService;
 
 @RestController
-@RequestMapping("/withmap/user")
+@RequestMapping("/withmap/users")
 public class UserController {
 
 	@Autowired
