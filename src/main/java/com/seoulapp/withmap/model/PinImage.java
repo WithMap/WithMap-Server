@@ -1,6 +1,6 @@
 package com.seoulapp.withmap.model;
 
-import com.seoulapp.withmap.model.Pin.PinBuilder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +11,7 @@ import lombok.Setter;
 @Builder
 public class PinImage {
 
+	@JsonIgnore
 	private int pinId;
 	
 	private String imagePath;

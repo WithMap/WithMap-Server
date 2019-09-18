@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.seoulapp.withmap.model.Pin;
+import com.seoulapp.withmap.model.PinView;
 import com.seoulapp.withmap.service.PinService;
 
 @RestController
@@ -28,9 +30,9 @@ public class PinController {
 	private PinService pinService;
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Pin> getPinById(@PathVariable("id") final int id) {
-		Pin pin = pinService.getPinById(id);
-		return new ResponseEntity<Pin>(pin, HttpStatus.OK);
+	public ResponseEntity<PinView> getPinById(@PathVariable("id") final int id) {
+		PinView pinView = pinService.getPinById(id);
+		return new ResponseEntity<PinView>(pinView, HttpStatus.OK);
 	}
 
 	@GetMapping()
@@ -42,15 +44,15 @@ public class PinController {
 	}
 
 	@PostMapping()
-	public ResponseEntity<Void> savePin(@RequestBody @Valid final Pin pin) {
-		pinService.savePin(pin);
+	public ResponseEntity<Void> savePin(@RequestBody @Valid final Pin pin, MultipartFile[] images) {
+		pinService.savePin(pin, images);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> updatePin(@PathVariable("id") final int id, @RequestBody @Valid final Pin pin) {
-		pinService.updatePin(pin);
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+	public ResponseEntity<Void> updatePin(@PathVariable("id") final int id, @RequestBody @Valid final Pin pin, MultipartFile[] images) {
+		pinService.updatePin(pin, images);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
