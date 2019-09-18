@@ -15,6 +15,8 @@ public class Pin extends Dto {
 	
 	private PinType type;
 	
+	private int state;
+	
 	private Double latitude;
 	
 	private Double longitude;

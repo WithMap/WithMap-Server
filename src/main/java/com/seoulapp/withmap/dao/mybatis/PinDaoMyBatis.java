@@ -1,6 +1,8 @@
 package com.seoulapp.withmap.dao.mybatis;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -11,8 +13,13 @@ import com.seoulapp.withmap.model.Pin;
 public class PinDaoMyBatis extends CommonDaoSupport implements PinDao {
 
 	@Override
-	public List<Pin> getAll() {
-		return getSqlSession().selectList("com.seoulapp.withmap.pin.selectList");
+	public List<Pin> getPins(final double latitude, final double longitude, final int radius) {
+		Map<String, Object> params = new HashMap<>();
+		
+		params.put("latitude", latitude);
+		params.put("longitude", longitude);
+		params.put("radius", radius);
+		return getSqlSession().selectList("com.seoulapp.withmap.pin.selectList", params);
 	}
 
 	@Override
