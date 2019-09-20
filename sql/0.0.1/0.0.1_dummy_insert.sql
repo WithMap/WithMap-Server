@@ -1,0 +1,5 @@
+INSERT INTO `user` (`id`, `password`, `name`, `email`, `gender`, `year`, `disable`, `point`, `crt_date`, `upd_date`) VALUES ('1', 'sj6052865', '최선재', 'homeskin@naver.com', 'm', '1996', 'n', '5000', '2019-09-08 21:07:54', '2019-09-08 21:07:54');
+INSERT INTO `user` (`id`, `password`, `name`, `email`, `gender`, `year`, `disable`, `point`, `crt_date`, `upd_date`) VALUES ('2', '1234', '김수연', 'test@naver.com', 'f', '1995', 'n', '5000', '2019-09-08 21:07:54', '2019-09-08 21:07:54');
+INSERT INTO `user` (`id`, `password`, `name`, `email`, `gender`, `year`, `disable`, `point`, `crt_date`, `upd_date`) VALUES ('3', 'park1229', '박다예', 'park@naver.com', 'f', '1995', 'n', '5000', '2019-09-08 21:07:54', '2019-09-08 21:07:54');
+
+INSERT INTO `pin` (`name`, `type`, `latitude`, `longitude`, `address`, `comment`, `state`, `like`, `user_id`, `crt_date`) VALUES ('test', 'OBSTACLE', '37.505152', '127.004883', 'test', 'test', '0', '0', '1', '2019-09-20 11:10:28');
