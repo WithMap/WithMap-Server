@@ -1,5 +1,7 @@
 package com.seoulapp.withmap.api;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +14,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.seoulapp.withmap.model.Pin;
 import com.seoulapp.withmap.model.User;
+import com.seoulapp.withmap.service.PinService;
 import com.seoulapp.withmap.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Authorization;
 
 @RestController
 @RequestMapping("/withmap/users")
@@ -24,12 +27,22 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private PinService pinService;
 
-	@ApiOperation(value = "나의 정보조회", authorizations = { @Authorization(value = "apiKey") })
+	@ApiOperation(value = "나의 정보조회")
 	@GetMapping("/myinfo")
 	public ResponseEntity<User> getMyInfo(@RequestHeader(value = "Authorization") final String token) {
 		User user = userService.getUserByToken(token);
 		return new ResponseEntity<User>(user, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "내가 등록한 핀 조회")
+	@GetMapping("/mypins")
+	public ResponseEntity<List<Pin>> getMyPins(@RequestHeader(value = "Authorization") final String token) {
+		List<Pin> pins = pinService.getUserPins(token);
+		return new ResponseEntity<List<Pin>>(pins, HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "회원가입")

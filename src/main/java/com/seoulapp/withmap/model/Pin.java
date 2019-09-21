@@ -11,6 +11,8 @@ public class Pin extends Dto {
 
 	private int id;
 
+	private int userId;
+	
 	private String name;
 
 	private PinType type;
@@ -18,14 +20,13 @@ public class Pin extends Dto {
 	private double latitude;
 	
 	private double longitude;
-	
+		
 	private String address;
 	
 	private	String comment;
-
+	
 	private int state;
 	
 	private int like;
 
-	private int userId;
 }

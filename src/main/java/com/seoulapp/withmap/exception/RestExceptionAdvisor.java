@@ -39,6 +39,12 @@ public class RestExceptionAdvisor {
 	public ErrorEntity handleBadRequestException(ErrorEntityException exception) {
 		return exception.entity();
 	}
+	
+	@ExceptionHandler(NoContentException.class)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public ErrorEntity handleNoContentException(ErrorEntityException exception) {
+		return exception.entity();
+	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

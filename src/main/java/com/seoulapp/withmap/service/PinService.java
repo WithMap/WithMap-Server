@@ -11,6 +11,8 @@ public interface PinService {
 
 	List<Pin> getPins(final double latitude, final double longitude, final int radius);
 	
+	List<Pin> getUserPins(String token);
+	
 	PinView getPinById(final int id);
 	
 	void savePin(final String token, final Pin pin, final MultipartFile[] images);

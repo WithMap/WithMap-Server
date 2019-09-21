@@ -23,6 +23,11 @@ public class PinDaoMyBatis extends CommonDaoSupport implements PinDao {
 	}
 
 	@Override
+	public List<Pin> getPins(final int userId) {
+		return getSqlSession().selectList("com.seoulapp.withmap.pin.selectListByUser", userId);
+	}
+	
+	@Override
 	public Pin get(final int id) {
 		return getSqlSession().selectOne("com.seoulapp.withmap.pin.select", id);
 	}

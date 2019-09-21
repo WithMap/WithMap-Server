@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.seoulapp.withmap.dao.PinDao;
 import com.seoulapp.withmap.dao.PinImageDao;
+import com.seoulapp.withmap.exception.NoContentException;
 import com.seoulapp.withmap.exception.NotFoundException;
 import com.seoulapp.withmap.model.Pin;
 import com.seoulapp.withmap.model.PinImage;
@@ -36,9 +37,28 @@ public class PinServiceImpl implements PinService {
 	@Override
 	public List<Pin> getPins(final double latitude, final double longitude, final int radius) {
 		
-		return pinDao.getPins(latitude, longitude, radius);
+		List<Pin> pins = pinDao.getPins(latitude, longitude, radius);
+		
+		if(pins.isEmpty()) {
+			throw new NoContentException(ErrorType.NO_CONTENT, "좌표 주위에 핀이 존재하지 않습니다.");
+		}
+		
+		return pins;
 	}
-
+	
+	@Override
+	public List<Pin> getUserPins(String token) {
+		int userId = userService.findIdByToken(token);
+		
+		List<Pin> pins = pinDao.getPins(userId);
+		
+		if(pins.isEmpty()) {
+			throw new NoContentException(ErrorType.NO_CONTENT, "등록한 핀이 없습니다.");
+		}
+		return pins;
+	}
+	
+	
 	@Override
 	public PinView getPinById(final int id) {
 		Pin pin = pinDao.get(id);

@@ -15,13 +15,19 @@
 		<result property="crtDate" column="crt_date"/>
 		<result property="updDate" column="upd_date"/>
 	</resultMap>
-	
+		
 	<select id="selectList" parameterType="map" resultMap="PinMap">
 		select *
 		from pin
 		WHERE abs(ST_DISTANCE_SPHERE(POINT(#{longitude}, #{latitude}), POINT(longitude, latitude))) <![CDATA[ <= ]]> #{radius};
     </select>
 
+	<select id="selectListByUser" parameterType="int" resultMap="PinMap">
+		select *
+		from pin
+		WHERE user_id = #{userId};
+    </select>
+    
 	<select id="select" parameterType="int" resultType="Pin">
 		SELECT *
 		FROM pin

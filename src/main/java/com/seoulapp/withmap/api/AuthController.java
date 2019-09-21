@@ -1,5 +1,7 @@
 package com.seoulapp.withmap.api;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +25,7 @@ public class AuthController {
 
     @PostMapping()
     @ApiOperation(value = "로그인")
-    public ResponseEntity<Token> signIn(@RequestBody Login login) {
+    public ResponseEntity<Token> signIn(@RequestBody @Valid Login login) {
         Token token = userService.signIn(login.getEmail(), login.getPassword());
         return new ResponseEntity<Token>(token, HttpStatus.OK);
     }
