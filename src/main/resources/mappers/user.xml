@@ -43,5 +43,11 @@
 		FROM user
 		where id = #{id};
 	</select>
+	
+	<select id="selectByEmail" parameterType="String" resultType="User">
+		SELECT *
+		FROM user
+		where email = #{email};
+	</select>
 
 </mapper>

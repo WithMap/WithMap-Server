@@ -13,7 +13,7 @@ public interface PinService {
 	
 	PinView getPinById(final int id);
 	
-	void savePin(final Pin pin, final MultipartFile[] images);
+	void savePin(final String token, final Pin pin, final MultipartFile[] images);
 	
 	void updatePin(final Pin pin, final MultipartFile[] images);
 	

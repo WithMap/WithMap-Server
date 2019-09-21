@@ -16,10 +16,13 @@ import com.seoulapp.withmap.model.PinView;
 import com.seoulapp.withmap.model.error.ErrorType;
 import com.seoulapp.withmap.service.GCPStorageService;
 import com.seoulapp.withmap.service.PinService;
+import com.seoulapp.withmap.service.UserService;
 
 @Service
 public class PinServiceImpl implements PinService {
 
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private GCPStorageService gcpStorageService;
@@ -47,7 +50,10 @@ public class PinServiceImpl implements PinService {
 	}
 
 	@Override
-	public void savePin(final Pin pin, final MultipartFile[] images) {
+	public void savePin(final String token, final Pin pin, final MultipartFile[] images) {
+		int userId = userService.findIdByToken(token);
+		
+		pin.setUserId(userId);
 		pinDao.insert(pin);
 		
 		List<PinImage> pinImages = getPinImages(images, pin.getId(), pin.getState());
@@ -57,7 +63,6 @@ public class PinServiceImpl implements PinService {
 
 	@Override
 	public void updatePin(final Pin pin, final MultipartFile[] images) {
-
 		pinDao.update(pin);
 
 		List<PinImage> pinImages = getPinImages(images, pin.getId(), pin.getState());
