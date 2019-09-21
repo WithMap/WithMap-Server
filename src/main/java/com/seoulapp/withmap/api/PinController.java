@@ -32,6 +32,7 @@ public class PinController {
 	@GetMapping("/{id}")
 	public ResponseEntity<PinView> getPinById(@PathVariable("id") final int id) {
 		PinView pinView = pinService.getPinById(id);
+//		System.out.println(Double.parseDouble(pinView.getPin().getLongitude()) == 127.004883);
 		return new ResponseEntity<PinView>(pinView, HttpStatus.OK);
 	}
 

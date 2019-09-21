@@ -8,24 +8,24 @@ import lombok.Setter;
 @Setter
 @Builder
 public class Pin extends Dto {
-	
+
 	private int id;
-	
+
 	private String name;
-	
+
 	private PinType type;
-	
-	private int state;
-	
-	private Double latitude;
-	
-	private Double longitude;
-	
+
+	private double latitude;
+
+	private double longitude;
+
 	private String address;
-	
-	private	String comment;
-	
+
+	private String comment;
+
+	private int state;
+
 	private int like;
-	
+
 	private int userId;
 }

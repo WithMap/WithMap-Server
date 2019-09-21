@@ -19,7 +19,7 @@
 	<select id="selectList" parameterType="map" resultMap="PinMap">
 		select *
 		from pin
-		WHERE Math.abs(ST_DISTANCE_SPHERE(POINT(#{longitude}, #{latitude}), POINT(longitude, latitude))) <![CDATA[ <= ]]> #{radius};
+		WHERE abs(ST_DISTANCE_SPHERE(POINT(#{longitude}, #{latitude}), POINT(longitude, latitude))) <![CDATA[ <= ]]> #{radius};
     </select>
 
 	<select id="select" parameterType="int" resultType="Pin">
