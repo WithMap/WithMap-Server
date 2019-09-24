@@ -22,5 +22,5 @@ public interface PinService {
 	
 	void deletePin(final String token, final int id);
 
-	void imageTest(MultipartFile file);
+	String imageTest(MultipartFile file);
 }

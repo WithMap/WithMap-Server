@@ -88,8 +88,10 @@ public class PinController {
 	}
 	
 	@ResponseBody
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "Authorization", value = "인증토큰", required = true, dataType = "String", paramType = "header") })
 	@PostMapping("/test")
-	public void imageTest(@RequestPart("file") MultipartFile file) {
-		pinService.imageTest(file);
+	public String imageTest(@RequestPart("file") MultipartFile file) {
+		return pinService.imageTest(file);
 	}
 }
