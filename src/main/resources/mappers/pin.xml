@@ -4,7 +4,8 @@
 
 	<resultMap id="PinMap" type="Pin">
 		<result property="id" column="id"/>
-		<result property="name" column="name"/>
+		<result property="unimprovedName" column="unimproved_mame"/>
+		<result property="improvedName" column="improved_name"/>
 		<result property="type" column="type"/>
 		<result property="latitude" column="latitude"/>
 		<result property="longitude" column="longitude"/>
@@ -36,7 +37,8 @@
 	
 	<insert id="insert" parameterType="Pin"> 
 		INSERT INTO pin (
-			name
+			unimproved_name
+			, improved_name
 			, type
 			, latitude
 			, longitude
@@ -47,7 +49,8 @@
 			, crt_date
 			, upd_date
 		) values ( 
-			#{name}
+			#{unimprovedName}
+			, #{improvedName}
 			, #{type}
 			, #{latitude}
 			, #{longitude}
@@ -63,7 +66,8 @@
 	<update id="update" parameterType="Pin">
 		UPDATE pin
 		SET upd_date = current_timestamp
-			, name = #{name}
+			, unimproved_name = #{unimprovedName}
+			, improved_name = #{improvedName}
 			, comment = #{comment}
 			, like = #{like}
 			, user_id = #{userId}

@@ -16,5 +16,5 @@ public class PinImage {
 	
 	private String imagePath;
 	
-	private int state;
+	private boolean state;
 }

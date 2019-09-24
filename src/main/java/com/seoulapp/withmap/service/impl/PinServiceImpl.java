@@ -24,10 +24,10 @@ public class PinServiceImpl implements PinService {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private GCPStorageService gcpStorageService;
-	
+
 	@Autowired
 	private PinDao pinDao;
 
@@ -36,56 +36,55 @@ public class PinServiceImpl implements PinService {
 
 	@Override
 	public List<Pin> getPins(final double latitude, final double longitude, final int radius) {
-		
+
 		List<Pin> pins = pinDao.getPins(latitude, longitude, radius);
-		
-		if(pins.isEmpty()) {
+
+		if (pins.isEmpty()) {
 			throw new NoContentException(ErrorType.NO_CONTENT, "좌표 주위에 핀이 존재하지 않습니다.");
 		}
-		
+
 		return pins;
 	}
-	
+
 	@Override
 	public List<Pin> getUserPins(String token) {
 		int userId = userService.findIdByToken(token);
-		
+
 		List<Pin> pins = pinDao.getPins(userId);
-		
-		if(pins.isEmpty()) {
+
+		if (pins.isEmpty()) {
 			throw new NoContentException(ErrorType.NO_CONTENT, "등록한 핀이 없습니다.");
 		}
 		return pins;
 	}
-	
-	
+
 	@Override
 	public PinView getPinById(final int id) {
 		Pin pin = pinDao.get(id);
-		
-		if(pin == null)
+
+		if (pin == null)
 			throw new NotFoundException(ErrorType.NOT_FOUND, "존재하지 않는 핀입니다.");
-		
+
 		return new PinView(pin, pinImageDao.getAll(id));
 	}
 
 	@Override
 	public void savePin(final String token, final Pin pin, final MultipartFile[] images) {
 		int userId = userService.findIdByToken(token);
-		
+
 		pin.setUserId(userId);
 		pinDao.insert(pin);
-		
-		List<PinImage> pinImages = getPinImages(images, pin.getId(), pin.getState());
+
+		List<PinImage> pinImages = getPinImages(images, pin.getId(), pin.isState());
 		pinImageDao.insert(pinImages);
-		
+
 	}
 
 	@Override
 	public void updatePin(final Pin pin, final MultipartFile[] images) {
 		pinDao.update(pin);
 
-		List<PinImage> pinImages = getPinImages(images, pin.getId(), pin.getState());
+		List<PinImage> pinImages = getPinImages(images, pin.getId(), pin.isState());
 		pinImageDao.insert(pinImages);
 
 	}
@@ -95,9 +94,8 @@ public class PinServiceImpl implements PinService {
 		pinDao.delete(id);
 	}
 
-	
-	private List<PinImage> getPinImages(MultipartFile[] images, int pinId, int state) {
-		
+	private List<PinImage> getPinImages(MultipartFile[] images, int pinId, boolean state) {
+
 		List<PinImage> pinImages = new ArrayList<PinImage>();
 		for (MultipartFile image : images) {
 			if (images.length != 0) {
@@ -107,7 +105,6 @@ public class PinServiceImpl implements PinService {
 				pinImages.add(pinImage);
 			}
 		}
-		
 		return pinImages;
 	}
 }
