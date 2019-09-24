@@ -4,7 +4,7 @@
 
 	<resultMap id="PinMap" type="Pin">
 		<result property="id" column="id"/>
-		<result property="unimprovedName" column="unimproved_mame"/>
+		<result property="unimprovedName" column="unimproved_name"/>
 		<result property="improvedName" column="improved_name"/>
 		<result property="type" column="type"/>
 		<result property="latitude" column="latitude"/>
