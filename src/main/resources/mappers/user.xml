@@ -16,10 +16,10 @@
 			#{password}
 			, #{name}
 			, #{email}
-			, #{point}
 			, #{gender}
 			, #{year}
 			, #{disable}
+			, #{point}
 		 	, current_timestamp
 		 	, current_timestamp
 		 ) 

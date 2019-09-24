@@ -44,7 +44,11 @@
 			, longitude
 			, address
 			, state
+<<<<<<< Updated upstream
 			, like_count
+=======
+			, like
+>>>>>>> Stashed changes
 			, crt_date
 			, upd_date
 		) values ( 
@@ -56,7 +60,11 @@
 			, #{longitude}
 			, #{address}
 			, #{state}
+<<<<<<< Updated upstream
 			, #{likeCount}
+=======
+			, #{like}
+>>>>>>> Stashed changes
 		 	, current_timestamp
 		 	, current_timestamp
 		 ) 

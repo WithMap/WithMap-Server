@@ -19,7 +19,7 @@ import com.seoulapp.withmap.model.PinImage;
 import com.seoulapp.withmap.model.PinType;
 import com.seoulapp.withmap.model.PinView;
 import com.seoulapp.withmap.model.error.ErrorType;
-import com.seoulapp.withmap.service.GCPStorageService;
+import com.seoulapp.withmap.service.FileUploadService;
 import com.seoulapp.withmap.service.PinService;
 import com.seoulapp.withmap.service.UserService;
 
@@ -30,7 +30,7 @@ public class PinServiceImpl implements PinService {
 	private UserService userService;
 
 	@Autowired
-	private GCPStorageService gcpStorageService;
+	private FileUploadService fileUploadService;
 
 	@Autowired
 	private PinDao pinDao;
@@ -92,9 +92,10 @@ public class PinServiceImpl implements PinService {
 		pin.setLikeCount(0);
 		pinDao.insert(pin);
 		
-		List<PinImage> pinImages = getPinImages(images, pin.getId(), pin.isState());
-		pinImageDao.insert(pinImages);
-
+		if (images != null) {
+			List<PinImage> pinImages = getPinImages(images, pin.getId(), pin.isState());
+			pinImageDao.insert(pinImages);
+		}
 	}
 
 	@Override
@@ -107,9 +108,10 @@ public class PinServiceImpl implements PinService {
 
 		pinDao.update(pin);
 
-		List<PinImage> pinImages = getPinImages(images, pin.getId(), pin.isState());
-		pinImageDao.insert(pinImages);
-
+		if (images != null) {
+			List<PinImage> pinImages = getPinImages(images, pin.getId(), pin.isState());
+			pinImageDao.insert(pinImages);
+		}
 	}
 
 	@Override
@@ -128,7 +130,7 @@ public class PinServiceImpl implements PinService {
 		List<PinImage> pinImages = new ArrayList<PinImage>();
 		for (MultipartFile image : images) {
 			if (images.length != 0) {
-				String url = gcpStorageService.upload(image);
+				String url = fileUploadService.upload(image);
 
 				PinImage pinImage = PinImage.builder().pinId(pinId).state(state).imagePath(url).build();
 				pinImages.add(pinImage);

@@ -2,7 +2,6 @@ package com.seoulapp.withmap.service.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
-import java.util.List;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import com.seoulapp.withmap.exception.ExpiredTokenException;
 import com.seoulapp.withmap.exception.NotFoundException;
 import com.seoulapp.withmap.exception.NotValidTokenException;
 import com.seoulapp.withmap.exception.UnAuthenticationException;
-import com.seoulapp.withmap.model.Pin;
 import com.seoulapp.withmap.model.Token;
 import com.seoulapp.withmap.model.User;
 import com.seoulapp.withmap.model.error.ErrorType;

@@ -24,8 +24,9 @@ import com.seoulapp.withmap.model.Pin;
 import com.seoulapp.withmap.model.PinView;
 import com.seoulapp.withmap.service.PinService;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Authorization;
 
 @RestController
 @RequestMapping("/withmap/pins")
@@ -34,14 +35,18 @@ public class PinController {
 	@Autowired
 	private PinService pinService;
 
-	@ApiOperation(value = "핀 상세조회", authorizations = { @Authorization(value = "apiKey") })
+	@ApiOperation(value = "핀 상세조회")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "Authorization", value = "인증토큰", required = true, dataType = "String", paramType = "header") })
 	@GetMapping("/{id}")
 	public ResponseEntity<PinView> getPinById(@PathVariable("id") final int id) {
 		PinView pinView = pinService.getPinById(id);
 		return new ResponseEntity<PinView>(pinView, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "주위 모든 핀 조회", authorizations = { @Authorization(value = "apiKey") })
+	@ApiOperation(value = "주위 모든 핀 조회")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "Authorization", value = "인증토큰", required = true, dataType = "String", paramType = "header") })
 	@GetMapping()
 	public ResponseEntity<List<Pin>> getPins(@RequestParam(value = "latitude") final double latitude,
 			@RequestParam(value = "longitude") double longitude,
@@ -50,6 +55,7 @@ public class PinController {
 		return new ResponseEntity<List<Pin>>(pins, HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "핀 작성하기")
 	@PostMapping()
 	public ResponseEntity<Void> savePin(@RequestHeader("Authorization") String token, @Valid final Pin pin,
 			MultipartFile[] images, @RequestParam Map<String, String> detailContents) {
@@ -57,7 +63,9 @@ public class PinController {
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
-	@ApiOperation(value = "핀 수정하기", authorizations = { @Authorization(value = "apiKey") })
+	@ApiOperation(value = "핀 수정하기")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "Authorization", value = "인증토큰", required = true, dataType = "String", paramType = "header") })
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> updatePin(@RequestHeader(value = "Authorization") final String token,
 			@PathVariable("id") final int id, @RequestBody @Valid final Pin pin, MultipartFile[] images) {
@@ -65,7 +73,9 @@ public class PinController {
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "핀 삭제하기", authorizations = { @Authorization(value = "apiKey") })
+	@ApiOperation(value = "핀 삭제하기")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "Authorization", value = "인증토큰", required = true, dataType = "String", paramType = "header") })
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletePin(@RequestHeader(value = "Authorization") final String token,
 			@PathVariable("id") final int id) {
