@@ -69,12 +69,15 @@
 
 	<update id="update" parameterType="Pin">
 		UPDATE pin
-		SET upd_date =
-		current_timestamp
-		, unimproved_name = #{unimprovedName}
-		, improved_name = #{improvedName}
-		, like_count = #{likeCount}
-		, user_id = #{userId}
+		SET upd_date = current_timestamp
+			, user_id = #{userId}
+			, unimproved_name = #{unimprovedName}
+			, improved_name = #{improvedName}
+			, latitude = #{latitude}
+			, longitude = #{longitude}
+			, address = #{address}
+			, state = #{state}
+			, like_count = #{likeCount}
 		WHERE id = #{id}
 	</update>
 

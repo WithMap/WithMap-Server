@@ -141,6 +141,7 @@ public class PinServiceImpl implements PinService {
 	}
 
 	@Override
+	@Transactional
 	public void updatePin(final String token, final Pin pin, final MultipartFile[] images) {
 
 		// 요청자에게 수정 권한이 존재하는지 확인
@@ -157,6 +158,7 @@ public class PinServiceImpl implements PinService {
 	}
 
 	@Override
+	@Transactional
 	public void deletePin(final String token, final int id) {
 
 		// 요청자에게 삭제 권한이 존재하는지 확인
@@ -187,6 +189,8 @@ public class PinServiceImpl implements PinService {
 		System.out.println(s);
 	}
 	
+	@Override
+	@Transactional
 	public void likePin(String token, int pinId) {
 		
 		int userId = userService.findIdByToken(token);
@@ -208,11 +212,12 @@ public class PinServiceImpl implements PinService {
 		// 좋아요
 		Pin pin = pinDao.get(pinId);
 		pin.setLikeCount(pin.getLikeCount() + 1);
-		pinDao.insert(pin);
+		pinDao.update(pin);
 		
 	}
 
 	@Override
+	@Transactional
 	public void reportPin(String token, int pinId) {
 		int userId = userService.findIdByToken(token);
 
