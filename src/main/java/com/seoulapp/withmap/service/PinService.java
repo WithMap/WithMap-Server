@@ -17,9 +17,9 @@ public interface PinService {
 	
 	void savePin(final String token, final Pin pin, final MultipartFile[] images);
 	
-	void updatePin(final Pin pin, final MultipartFile[] images);
+	void updatePin(final String token, final Pin pin, final MultipartFile[] images);
 	
-	void deletePin(final int id);
+	void deletePin(final String token, final int id);
 
 	
 }

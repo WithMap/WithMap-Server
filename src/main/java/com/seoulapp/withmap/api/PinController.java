@@ -59,16 +59,16 @@ public class PinController {
 
 	@ApiOperation(value = "핀 수정하기", authorizations = { @Authorization(value = "apiKey") })
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> updatePin(@PathVariable("id") final int id, @RequestBody @Valid final Pin pin,
+	public ResponseEntity<Void> updatePin(@RequestHeader(value = "Authorization") final String token, @PathVariable("id") final int id, @RequestBody @Valid final Pin pin,
 			MultipartFile[] images) {
-		pinService.updatePin(pin, images);
+		pinService.updatePin(token, pin, images);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "핀 삭제하기", authorizations = { @Authorization(value = "apiKey") })
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deletePin(@PathVariable("id") final int id) {
-		pinService.deletePin(id);
+	public ResponseEntity<Void> deletePin(@RequestHeader(value = "Authorization") final String token, @PathVariable("id") final int id) {
+		pinService.deletePin(token, id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }

@@ -9,10 +9,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.seoulapp.withmap.dao.PinDao;
 import com.seoulapp.withmap.dao.PinImageDao;
+import com.seoulapp.withmap.dao.RestroomDao;
 import com.seoulapp.withmap.exception.NoContentException;
 import com.seoulapp.withmap.exception.NotFoundException;
+import com.seoulapp.withmap.exception.UnAuthorizedException;
 import com.seoulapp.withmap.model.Pin;
 import com.seoulapp.withmap.model.PinImage;
+import com.seoulapp.withmap.model.PinType;
 import com.seoulapp.withmap.model.PinView;
 import com.seoulapp.withmap.model.error.ErrorType;
 import com.seoulapp.withmap.service.GCPStorageService;
@@ -33,6 +36,9 @@ public class PinServiceImpl implements PinService {
 
 	@Autowired
 	private PinImageDao pinImageDao;
+
+	@Autowired
+	private RestroomDao restroomDao;
 
 	@Override
 	public List<Pin> getPins(final double latitude, final double longitude, final int radius) {
@@ -65,7 +71,15 @@ public class PinServiceImpl implements PinService {
 		if (pin == null)
 			throw new NotFoundException(ErrorType.NOT_FOUND, "존재하지 않는 핀입니다.");
 
-		return new PinView(pin, pinImageDao.getAll(id));
+		PinView pinView = new PinView(pin, pinImageDao.getAll(id));
+
+		// type이 restroom 일 경우 restroom 정보 추가
+		if (PinType.RESTROOM.match(pin.getType()))
+			pinView.setDetailContents(restroomDao.getRestroom(id));
+
+		System.out.println(pinView.getDetailContents());
+
+		return pinView;
 	}
 
 	@Override
@@ -81,7 +95,13 @@ public class PinServiceImpl implements PinService {
 	}
 
 	@Override
-	public void updatePin(final Pin pin, final MultipartFile[] images) {
+	public void updatePin(final String token, final Pin pin, final MultipartFile[] images) {
+		
+		// 요청자에게 수정 권한이 존재하는지 확인
+		int id = userService.findIdByToken(token);
+		if(id != pin.getId())
+			throw new UnAuthorizedException(ErrorType.UNAUTHORIZED, "pin 수정 권한이 없습니다.");
+		
 		pinDao.update(pin);
 
 		List<PinImage> pinImages = getPinImages(images, pin.getId(), pin.isState());
@@ -90,7 +110,13 @@ public class PinServiceImpl implements PinService {
 	}
 
 	@Override
-	public void deletePin(final int id) {
+	public void deletePin(final String token, final int id) {
+		
+		// 요청자에게 삭제 권한이 존재하는지 확인
+		int userId = userService.findIdByToken(token);
+		if(userId != id)
+			throw new UnAuthorizedException(ErrorType.UNAUTHORIZED, "pin 삭제 권한이 없습니다.");
+		
 		pinDao.delete(id);
 	}
 

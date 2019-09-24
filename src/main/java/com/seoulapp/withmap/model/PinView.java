@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class PinView {
 		private Pin pin;
+		private Object DetailContents;
 		private List<PinImage> pinImages;
 
 		public PinView(final Pin pin, final List<PinImage> pinImages) {

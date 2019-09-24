@@ -10,7 +10,6 @@
 		<result property="latitude" column="latitude"/>
 		<result property="longitude" column="longitude"/>
 		<result property="address" column="address"/>
-		<result property="comment" column="comment"/>
 		<result property="like" column="like"/>
 		<result property="userId" column="user_id"/>
 		<result property="crtDate" column="crt_date"/>
@@ -43,7 +42,6 @@
 			, latitude
 			, longitude
 			, address
-			, comment
 			, like
 			, user_id
 			, crt_date
@@ -55,7 +53,6 @@
 			, #{latitude}
 			, #{longitude}
 			, #{address}
-			, #{comment}
 			, #{like}
 			, #{userId}
 		 	, current_timestamp
@@ -68,7 +65,6 @@
 		SET upd_date = current_timestamp
 			, unimproved_name = #{unimprovedName}
 			, improved_name = #{improvedName}
-			, comment = #{comment}
 			, like = #{like}
 			, user_id = #{userId}
 		WHERE id = #{id}

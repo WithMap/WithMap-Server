@@ -12,6 +12,14 @@ public enum PinType {
 	public int intValue() {
 		return value;
 	}
+	
+	public boolean match(PinType pinType) {
+		return pinType == this; 
+	}
+	
+	public boolean match(int pinTypeInt) {
+		return pinTypeInt == this.intValue(); 
+	}
 
 	public static PinType valueOf(int value) {
 		switch (value) {

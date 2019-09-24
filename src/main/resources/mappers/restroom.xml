@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seoulapp.withmap.restroom">
+		    
+	<select id="select" parameterType="int" resultType="Restroom">
+		SELECT *
+		FROM restroom
+		where id = #{id};
+	</select>
+	
+	<insert id="insert" parameterType="Pin"> 
+		INSERT INTO restroom (
+			id
+			, useable_time
+			, department_number
+			, crt_date
+			, upd_date
+		) values ( 
+			#{id}
+			, #{useableTime}
+			, #{departmentNumber}
+		 	, current_timestamp
+		 	, current_timestamp
+		 ) 
+	 </insert>
+
+	<update id="update" parameterType="Restroom">
+		UPDATE restroom
+		SET upd_date = current_timestamp
+			, useable_time = #{useableTime}
+			, department_number = #{departmentNumber}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		DELETE *
+		FROM restroom
+		WHERE id = #{id}
+	</delete>
+	
+
+</mapper>

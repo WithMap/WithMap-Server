@@ -29,8 +29,6 @@ public class Pin extends Dto {
 
 	private String address;
 
-	private String comment;
-
 	private boolean state;
 
 	private int like;

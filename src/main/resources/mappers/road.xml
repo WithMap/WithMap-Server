@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seoulapp.withmap.road">
+	
+	<insert id="insert" parameterType="Pin"> 
+		INSERT INTO road (
+			id
+			, comment
+			, crt_date
+			, upd_date
+		) values ( 
+			#{id}
+			, #{comment}
+		 	, current_timestamp
+		 	, current_timestamp
+		 ) 
+	 </insert>
+
+	<update id="update" parameterType="Road">
+		UPDATE road
+		SET upd_date = current_timestamp
+			, comment = #{comment}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		DELETE *
+		FROM road
+		WHERE id = #{id}
+	</delete>
+		    
+	<select id="select" parameterType="int" resultType="Road">
+		SELECT *
+		FROM road
+		where id = #{id};
+	</select>
+
+</mapper>
