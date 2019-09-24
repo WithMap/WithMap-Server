@@ -15,8 +15,10 @@ public class FileUploadServiceImpl implements FileUploadService {
 
 	@Override
 	public String upload(MultipartFile image) {
-		String imagePath = "/upload" + image.getOriginalFilename();
+		String imagePath = "upload/" + image.getOriginalFilename();
+
 		File targetFile = new File(imagePath);
+
 		try {
 			InputStream fileStream = image.getInputStream();
 			FileUtils.copyInputStreamToFile(fileStream, targetFile);
@@ -24,7 +26,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 			FileUtils.deleteQuietly(targetFile);
 			e.printStackTrace();
 		}
-		
+
 		return imagePath;
 	}
 

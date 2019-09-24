@@ -138,4 +138,10 @@ public class PinServiceImpl implements PinService {
 		}
 		return pinImages;
 	}
+
+	@Override
+	public void imageTest(MultipartFile file) {
+		String s = fileUploadService.upload(file);
+		System.out.println(s);
+	}
 }
