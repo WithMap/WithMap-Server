@@ -90,7 +90,7 @@ public class PinController {
 	}
 
 	@ApiOperation(value = "핀 추천")
-	@PutMapping("/{id}")
+	@PutMapping("/like/{id}")
 	public ResponseEntity<Void> likePin(@RequestHeader(value = "Authorization") final String token,
 			@PathVariable("id") final int id) {
 		pinService.likePin(token, id);
@@ -98,7 +98,7 @@ public class PinController {
 	}
 
 	@ApiOperation(value = "핀 신고")
-	@PutMapping("/{id}")
+	@PutMapping("/report/{id}")
 	public ResponseEntity<Void> reportPin(@RequestHeader(value = "Authorization") final String token,
 			@PathVariable("id") final int id) {
 		pinService.reportPin(token, id);
