@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seoulapp.withmap.like_log">
+		    
+	<select id="select" parameterType="int" resultType="LikeLog">
+		SELECT *
+		FROM like_log
+		where user_id = #{uesrId};
+	</select>
+	
+	<insert id="insert" parameterType="LikeLog"> 
+		INSERT INTO like_log (
+			pin_id
+			, user_id
+			, crt_date
+		) values ( 
+			#{pinId}
+			, #{userId}
+		 	, current_timestamp
+		 ) 
+	 </insert>
+
+</mapper>
