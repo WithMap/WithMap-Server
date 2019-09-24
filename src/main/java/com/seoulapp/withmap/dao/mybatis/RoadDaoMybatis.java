@@ -1,8 +1,11 @@
 package com.seoulapp.withmap.dao.mybatis;
 
+import org.springframework.stereotype.Component;
+
 import com.seoulapp.withmap.dao.RoadDao;
 import com.seoulapp.withmap.model.Road;
 
+@Component
 public class RoadDaoMybatis extends CommonDaoSupport implements RoadDao{
 
 	@Override

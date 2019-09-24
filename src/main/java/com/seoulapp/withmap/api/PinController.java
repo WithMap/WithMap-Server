@@ -68,8 +68,6 @@ public class PinController {
 	}
 
 	@ApiOperation(value = "핀 수정하기")
-	@ApiImplicitParams({
-			@ApiImplicitParam(name = "Authorization", value = "인증토큰", required = true, dataType = "String", paramType = "header") })
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> updatePin(@RequestHeader(value = "Authorization") final String token,
 			@PathVariable("id") final int id, @RequestBody @Valid final Pin pin, MultipartFile[] images) {
@@ -78,18 +76,33 @@ public class PinController {
 	}
 
 	@ApiOperation(value = "핀 삭제하기")
-	@ApiImplicitParams({
-			@ApiImplicitParam(name = "Authorization", value = "인증토큰", required = true, dataType = "String", paramType = "header") })
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletePin(@RequestHeader(value = "Authorization") final String token,
 			@PathVariable("id") final int id) {
 		pinService.deletePin(token, id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-	
+
 	@ResponseBody
 	@PostMapping("/test")
 	public void imageTest(@RequestPart("file") MultipartFile file) {
 		pinService.imageTest(file);
 	}
+
+	@ApiOperation(value = "핀 추천")
+	@PutMapping("/like/{id}")
+	public ResponseEntity<Void> likePin(@RequestHeader(value = "Authorization") final String token,
+			@PathVariable("id") final int id) {
+		pinService.likePin(token, id);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "핀 신고")
+	@PutMapping("/report/{id}")
+	public ResponseEntity<Void> reportPin(@RequestHeader(value = "Authorization") final String token,
+			@PathVariable("id") final int id) {
+		pinService.reportPin(token, id);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
 }

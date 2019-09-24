@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seoulapp.withmap.report_log">
+		    
+	<select id="selectList" parameterType="int" resultType="ReportLog">
+		SELECT *
+		FROM report_log
+		where user_id = #{uesrId};
+	</select>
+	
+	<insert id="insert" parameterType="ReportLog"> 
+		INSERT INTO report_log (
+			pin_id
+			, user_id
+			, crt_date
+		) values ( 
+			#{pinId}
+			, #{userId}
+		 	, current_timestamp
+		 ) 
+	 </insert>
+
+</mapper>

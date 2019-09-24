@@ -33,8 +33,8 @@ public class PinDaoMyBatis extends CommonDaoSupport implements PinDao {
 	}
 
 	@Override
-	public void insert(final Pin pin) {
-		getSqlSession().insert("com.seoulapp.withmap.pin.insert", pin);		
+	public int insert(final Pin pin) {
+		return getSqlSession().insert("com.seoulapp.withmap.pin.insert", pin);		
 	}
 
 	@Override

@@ -8,7 +8,7 @@
 		where id = #{id};
 	</select>
 	
-	<insert id="insert" parameterType="Pin"> 
+	<insert id="insert" parameterType="Restroom"> 
 		INSERT INTO restroom (
 			id
 			, useable_time

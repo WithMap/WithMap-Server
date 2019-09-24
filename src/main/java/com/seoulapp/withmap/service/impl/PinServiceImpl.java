@@ -6,11 +6,16 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.seoulapp.withmap.dao.LikeLogDao;
 import com.seoulapp.withmap.dao.PinDao;
 import com.seoulapp.withmap.dao.PinImageDao;
+import com.seoulapp.withmap.dao.ReportLogDao;
 import com.seoulapp.withmap.dao.RestroomDao;
+import com.seoulapp.withmap.dao.RoadDao;
+import com.seoulapp.withmap.exception.AlreadyExistException;
 import com.seoulapp.withmap.exception.NoContentException;
 import com.seoulapp.withmap.exception.NotFoundException;
 import com.seoulapp.withmap.exception.UnAuthorizedException;
@@ -18,7 +23,11 @@ import com.seoulapp.withmap.model.Pin;
 import com.seoulapp.withmap.model.PinImage;
 import com.seoulapp.withmap.model.PinType;
 import com.seoulapp.withmap.model.PinView;
+import com.seoulapp.withmap.model.Restroom;
+import com.seoulapp.withmap.model.Road;
 import com.seoulapp.withmap.model.error.ErrorType;
+import com.seoulapp.withmap.model.log.LikeLog;
+import com.seoulapp.withmap.model.log.ReportLog;
 import com.seoulapp.withmap.service.FileUploadService;
 import com.seoulapp.withmap.service.PinService;
 import com.seoulapp.withmap.service.UserService;
@@ -40,6 +49,15 @@ public class PinServiceImpl implements PinService {
 
 	@Autowired
 	private RestroomDao restroomDao;
+
+	@Autowired
+	private RoadDao roadDao;
+	
+	@Autowired
+	private LikeLogDao likeLogDao;
+	
+	@Autowired
+	private ReportLogDao reportLogDao;
 
 	@Override
 	public List<Pin> getPins(final double latitude, final double longitude, final int radius) {
@@ -84,6 +102,7 @@ public class PinServiceImpl implements PinService {
 	}
 
 	@Override
+	@Transactional
 	public void savePin(final String token, final Pin pin, final MultipartFile[] images,
 			final Map<String, String> detailContents) {
 		int userId = userService.findIdByToken(token);
@@ -91,10 +110,33 @@ public class PinServiceImpl implements PinService {
 		pin.setUserId(userId);
 		pin.setLikeCount(0);
 		pinDao.insert(pin);
-		
-		if (images != null) {
-			List<PinImage> pinImages = getPinImages(images, pin.getId(), pin.isState());
-			pinImageDao.insert(pinImages);
+
+		if (images != null && images.length != 0)
+			pinImageDao.insert(getPinImages(images, pin.getId(), pin.isState()));
+
+		// type 으로 분류
+		switch (PinType.valueOf(pin.getType())) {
+		case OBSTACLE:
+		case CURB:
+		case DIRTROAD:
+		case NARROWROAD:
+			Road road = new Road();
+			road.setId(pin.getId());
+			road.setComment(detailContents.get("comment"));
+
+			roadDao.insert(road);
+			break;
+		case RESTROOM:
+			Restroom restroom = new Restroom();
+
+			restroom.setId(pin.getId());
+			restroom.setUseableTime(detailContents.get("useableTime"));
+			restroom.setDepartmentNumber(detailContents.get("departmentNumber"));
+
+			restroomDao.insert(restroom);
+			break;
+		case RESTAURANT:
+			break;
 		}
 	}
 
@@ -143,5 +185,49 @@ public class PinServiceImpl implements PinService {
 	public void imageTest(MultipartFile file) {
 		String s = fileUploadService.upload(file);
 		System.out.println(s);
+	}
+	
+	public void likePin(String token, int pinId) {
+		
+		int userId = userService.findIdByToken(token);
+
+		// 로그 확인 후 중복 확인 체크
+		List<LikeLog> likeLogs = likeLogDao.getList(userId);
+		for(LikeLog log : likeLogs) {
+			if(log.getPinId() == pinId)
+				throw new AlreadyExistException(ErrorType.CONFLICT, "이미 추천한 PIN 입니다.");
+		}
+
+		// 로그 추가
+		LikeLog likeLog = new LikeLog();
+		likeLog.setPinId(pinId);
+		likeLog.setUserId(userId);
+		
+		likeLogDao.insert(likeLog);
+
+		// 좋아요
+		Pin pin = pinDao.get(pinId);
+		pin.setLikeCount(pin.getLikeCount() + 1);
+		pinDao.insert(pin);
+		
+	}
+
+	@Override
+	public void reportPin(String token, int pinId) {
+		int userId = userService.findIdByToken(token);
+
+		// 로그 확인 후 중복 확인 체크
+		List<ReportLog> reportLogs = reportLogDao.getList(userId);
+		for(ReportLog log : reportLogs) {
+			if(log.getPinId() == pinId)
+				throw new AlreadyExistException(ErrorType.CONFLICT, "이미 신고한 PIN 입니다.");
+		}
+		
+		// 로그 추가
+		ReportLog reportLog = new ReportLog();
+		reportLog.setPinId(pinId);
+		reportLog.setUserId(userId);
+		
+		reportLogDao.insert(reportLog);
 	}
 }

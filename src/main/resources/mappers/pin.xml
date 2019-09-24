@@ -3,38 +3,40 @@
 <mapper namespace="com.seoulapp.withmap.pin">
 
 	<resultMap id="PinMap" type="Pin">
-		<result property="id" column="id"/>
-		<result property="unimprovedName" column="unimproved_name"/>
-		<result property="improvedName" column="improved_name"/>
-		<result property="type" column="type"/>
-		<result property="latitude" column="latitude"/>
-		<result property="longitude" column="longitude"/>
-		<result property="address" column="address"/>
-		<result property="like" column="like"/>
-		<result property="userId" column="user_id"/>
-		<result property="crtDate" column="crt_date"/>
-		<result property="updDate" column="upd_date"/>
+		<result property="id" column="id" />
+		<result property="unimprovedName" column="unimproved_name" />
+		<result property="improvedName" column="improved_name" />
+		<result property="type" column="type" />
+		<result property="latitude" column="latitude" />
+		<result property="longitude" column="longitude" />
+		<result property="address" column="address" />
+		<result property="like" column="like" />
+		<result property="userId" column="user_id" />
+		<result property="crtDate" column="crt_date" />
+		<result property="updDate" column="upd_date" />
 	</resultMap>
-		
+
 	<select id="selectList" parameterType="map" resultMap="PinMap">
 		select *
 		from pin
-		WHERE abs(ST_DISTANCE_SPHERE(POINT(#{longitude}, #{latitude}), POINT(longitude, latitude))) <![CDATA[ <= ]]> #{radius};
-    </select>
+		WHERE abs(ST_DISTANCE_SPHERE(POINT(#{longitude},
+		#{latitude}), POINT(longitude, latitude))) <![CDATA[ <= ]]>
+		#{radius};
+	</select>
 
 	<select id="selectListByUser" parameterType="int" resultMap="PinMap">
 		select *
 		from pin
 		WHERE user_id = #{userId};
-    </select>
-    
+	</select>
+
 	<select id="select" parameterType="int" resultType="Pin">
 		SELECT *
 		FROM pin
 		where id = #{id};
 	</select>
-	
-	<insert id="insert" parameterType="Pin"> 
+
+	<insert id="insert" parameterType="Pin">
 		INSERT INTO pin (
 			user_id
 			, unimproved_name
@@ -47,7 +49,7 @@
 			, like_count
 			, crt_date
 			, upd_date
-		) values ( 
+		) values (
 			#{userId}
 			, #{unimprovedName}
 			, #{improvedName}
@@ -57,26 +59,30 @@
 			, #{address}
 			, #{state}
 			, #{likeCount}
-		 	, current_timestamp
-		 	, current_timestamp
-		 ) 
-	 </insert>
+			, current_timestamp
+			, current_timestamp
+		)
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
 
 	<update id="update" parameterType="Pin">
 		UPDATE pin
-		SET upd_date = current_timestamp
-			, unimproved_name = #{unimprovedName}
-			, improved_name = #{improvedName}
-			, like = #{like}
-			, user_id = #{userId}
+		SET upd_date =
+		current_timestamp
+		, unimproved_name = #{unimprovedName}
+		, improved_name = #{improvedName}
+		, like_count = #{likeCount}
+		, user_id = #{userId}
 		WHERE id = #{id}
 	</update>
-	
+
 	<delete id="delete" parameterType="int">
 		DELETE *
 		FROM pin
 		WHERE id = #{id}
 	</delete>
-	
+
 
 </mapper>
