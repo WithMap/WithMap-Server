@@ -2,6 +2,7 @@ package com.seoulapp.withmap.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,12 +84,14 @@ public class PinServiceImpl implements PinService {
 	}
 
 	@Override
-	public void savePin(final String token, final Pin pin, final MultipartFile[] images) {
+	public void savePin(final String token, final Pin pin, final MultipartFile[] images,
+			final Map<String, String> detailContents) {
 		int userId = userService.findIdByToken(token);
 
 		pin.setUserId(userId);
+		pin.setLikeCount(0);
 		pinDao.insert(pin);
-
+		
 		List<PinImage> pinImages = getPinImages(images, pin.getId(), pin.isState());
 		pinImageDao.insert(pinImages);
 
@@ -96,12 +99,12 @@ public class PinServiceImpl implements PinService {
 
 	@Override
 	public void updatePin(final String token, final Pin pin, final MultipartFile[] images) {
-		
+
 		// 요청자에게 수정 권한이 존재하는지 확인
 		int id = userService.findIdByToken(token);
-		if(id != pin.getId())
+		if (id != pin.getId())
 			throw new UnAuthorizedException(ErrorType.UNAUTHORIZED, "pin 수정 권한이 없습니다.");
-		
+
 		pinDao.update(pin);
 
 		List<PinImage> pinImages = getPinImages(images, pin.getId(), pin.isState());
@@ -111,12 +114,12 @@ public class PinServiceImpl implements PinService {
 
 	@Override
 	public void deletePin(final String token, final int id) {
-		
+
 		// 요청자에게 삭제 권한이 존재하는지 확인
 		int userId = userService.findIdByToken(token);
-		if(userId != id)
+		if (userId != id)
 			throw new UnAuthorizedException(ErrorType.UNAUTHORIZED, "pin 삭제 권한이 없습니다.");
-		
+
 		pinDao.delete(id);
 	}
 

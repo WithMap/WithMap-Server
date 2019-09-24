@@ -36,25 +36,27 @@
 	
 	<insert id="insert" parameterType="Pin"> 
 		INSERT INTO pin (
-			unimproved_name
+			user_id
+			, unimproved_name
 			, improved_name
 			, type
 			, latitude
 			, longitude
 			, address
-			, like
-			, user_id
+			, state
+			, like_count
 			, crt_date
 			, upd_date
 		) values ( 
-			#{unimprovedName}
+			#{userId}
+			, #{unimprovedName}
 			, #{improvedName}
 			, #{type}
 			, #{latitude}
 			, #{longitude}
 			, #{address}
-			, #{like}
-			, #{userId}
+			, #{state}
+			, #{likeCount}
 		 	, current_timestamp
 		 	, current_timestamp
 		 ) 

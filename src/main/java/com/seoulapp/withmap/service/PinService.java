@@ -1,6 +1,7 @@
 package com.seoulapp.withmap.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,7 +16,7 @@ public interface PinService {
 	
 	PinView getPinById(final int id);
 	
-	void savePin(final String token, final Pin pin, final MultipartFile[] images);
+	void savePin(final String token, final Pin pin, final MultipartFile[] images, final Map<String, String> detailContents);
 	
 	void updatePin(final String token, final Pin pin, final MultipartFile[] images);
 	

@@ -1,6 +1,7 @@
 package com.seoulapp.withmap.api;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -49,25 +50,25 @@ public class PinController {
 		return new ResponseEntity<List<Pin>>(pins, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "핀 작성하기", authorizations = { @Authorization(value = "apiKey") })
 	@PostMapping()
-	public ResponseEntity<Void> savePin(@RequestHeader("Authorization") String token, @RequestBody @Valid final Pin pin,
-			MultipartFile[] images) {
-		pinService.savePin(token, pin, images);
+	public ResponseEntity<Void> savePin(@RequestHeader("Authorization") String token, @Valid final Pin pin,
+			MultipartFile[] images, @RequestParam Map<String, String> detailContents) {
+		pinService.savePin(token, pin, images, detailContents);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
 	@ApiOperation(value = "핀 수정하기", authorizations = { @Authorization(value = "apiKey") })
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> updatePin(@RequestHeader(value = "Authorization") final String token, @PathVariable("id") final int id, @RequestBody @Valid final Pin pin,
-			MultipartFile[] images) {
+	public ResponseEntity<Void> updatePin(@RequestHeader(value = "Authorization") final String token,
+			@PathVariable("id") final int id, @RequestBody @Valid final Pin pin, MultipartFile[] images) {
 		pinService.updatePin(token, pin, images);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "핀 삭제하기", authorizations = { @Authorization(value = "apiKey") })
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deletePin(@RequestHeader(value = "Authorization") final String token, @PathVariable("id") final int id) {
+	public ResponseEntity<Void> deletePin(@RequestHeader(value = "Authorization") final String token,
+			@PathVariable("id") final int id) {
 		pinService.deletePin(token, id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}

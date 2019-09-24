@@ -31,10 +31,14 @@ public class Pin extends Dto {
 
 	private boolean state;
 
-	private int like;
+	private int likeCount;
 
 	public int getType() {
 		return type.intValue();
 	}
-
+	
+	public void setType(int type) {
+		this.type = PinType.valueOf(type);
+	}
+	
 }
