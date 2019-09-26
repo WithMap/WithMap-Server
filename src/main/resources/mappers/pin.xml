@@ -73,17 +73,8 @@
 			, user_id = #{userId}
 			, unimproved_name = #{unimprovedName}
 			, improved_name = #{improvedName}
-			, state = #{state}
-		WHERE id = #{id}
-	</update>
-	
-	<!-- 자기 자신 글수정-->
-	<update id="updateMine" parameterType="Pin">
-		UPDATE pin
-		SET upd_date = current_timestamp
-			, user_id = #{userId}
-			, improved_name = #{improvedName}
 			, comment = #{comment}
+			, state = #{state}
 		WHERE id = #{id}
 	</update>
 	

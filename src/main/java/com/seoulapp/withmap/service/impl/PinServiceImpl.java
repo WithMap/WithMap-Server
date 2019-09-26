@@ -91,22 +91,24 @@ public class PinServiceImpl implements PinService {
 			throw new NotFoundException(ErrorType.NOT_FOUND, "존재하지 않는 핀입니다.");
 
 		PinView pinView = new PinView(pin, pinImageDao.getAll(id));
-		
+
 		// 자신의 글인지 확인
 		int userId = userService.findIdByToken(token);
 		Integer pinAuthorId = pin.getUserId();
-		if(pinAuthorId != null) {
+		if (pinAuthorId != null) {
 			pinView.setMine(userId == pinAuthorId.intValue());
 		}
 
-		//TODO : 이미 추천한 글인지 확인
-		
-		
+		// 이미 추천한 글인지 확인
+		List<LikeLog> likes = likeLogDao.getList(userId);
+		if (likes != null) {
+			boolean isRecommended = likes.stream().map(LikeLog::getPinId).anyMatch(p -> p == id);
+			pinView.setRecommended(isRecommended);
+		}
+
 		// type이 restroom 일 경우 restroom 정보 추가
 		if (PinType.RESTROOM.match(pin.getType()))
 			pinView.setDetailContents(restroomDao.getRestroom(id));
-
-		System.out.println(pinView.getDetailContents());
 
 		return pinView;
 	}

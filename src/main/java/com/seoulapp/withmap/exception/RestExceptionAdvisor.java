@@ -3,6 +3,7 @@ package com.seoulapp.withmap.exception;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -60,10 +61,10 @@ public class RestExceptionAdvisor {
 				exception.getBindingResult().getAllErrors().get(0).getDefaultMessage()).entity();
 	}
 	
-	@ExceptionHandler(MissingServletRequestParameterException.class)
+	@ExceptionHandler({MissingServletRequestParameterException.class, HttpMessageNotReadableException.class})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ErrorEntity handleMissingServletRequestParameterException(MissingServletRequestParameterException exception) {
-		return new ErrorEntityException(ErrorType.BAD_REQUEST, exception.getMessage()).entity();
+	public ErrorEntity handleMissingServletRequestParameterException(Exception exception) {
+		return new ErrorEntityException(ErrorType.BAD_REQUEST, "유효한 형식의 쿼리 요청이 아닙니다.").entity();
 	}
 	
 }
