@@ -38,11 +38,10 @@ public class PinController {
 	private PinService pinService;
 
 	@ApiOperation(value = "핀 상세조회")
-	@ApiImplicitParams({
-			@ApiImplicitParam(name = "Authorization", value = "인증토큰", required = true, dataType = "String", paramType = "header") })
 	@GetMapping("/{id}")
-	public ResponseEntity<PinView> getPinById(@PathVariable("id") final int id) {
-		PinView pinView = pinService.getPinById(id);
+	public ResponseEntity<PinView> getPinById(@RequestHeader("Authorization") String token,
+			@PathVariable("id") final int id) {
+		PinView pinView = pinService.getPinById(token, id);
 		return new ResponseEntity<PinView>(pinView, HttpStatus.OK);
 	}
 
@@ -60,16 +59,13 @@ public class PinController {
 	@ResponseBody
 	@ApiOperation(value = "핀 작성하기")
 	@PostMapping()
-	public ResponseEntity<Void> savePin(@RequestHeader("Authorization") String token,
-			@RequestPart("pin") @Valid final Pin pin, @RequestPart("file") MultipartFile[] images,
-			@RequestParam Map<String, String> detailContents) {
-		pinService.savePin(token, pin, images, detailContents);
+	public ResponseEntity<Void> savePin(@RequestHeader("Authorization") String token, @RequestPart @Valid final Pin pin,
+			@RequestPart("files") MultipartFile[] files, @RequestParam Map<String, String> detailContents) {
+		pinService.savePin(token, pin, files, detailContents);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
 	@ApiOperation(value = "핀 수정하기")
-	@ApiImplicitParams({
-			@ApiImplicitParam(name = "Authorization", value = "인증토큰", required = true, dataType = "String", paramType = "header") })
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> updatePin(@RequestHeader(value = "Authorization") final String token,
 			@PathVariable("id") final int id, @RequestBody @Valid final Pin pin, MultipartFile[] images) {
@@ -78,20 +74,36 @@ public class PinController {
 	}
 
 	@ApiOperation(value = "핀 삭제하기")
-	@ApiImplicitParams({
-			@ApiImplicitParam(name = "Authorization", value = "인증토큰", required = true, dataType = "String", paramType = "header") })
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletePin(@RequestHeader(value = "Authorization") final String token,
 			@PathVariable("id") final int id) {
 		pinService.deletePin(token, id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-	
+
+	@ApiOperation(value = "이미지 업로드 테스트중")
 	@ResponseBody
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "Authorization", value = "인증토큰", required = true, dataType = "String", paramType = "header") })
+			@ApiImplicitParam(name = "Authorization", value = "인증토큰", required = true, dataType = "String", paramType = "header") })
 	@PostMapping("/test")
 	public String imageTest(@RequestPart("file") MultipartFile file) {
 		return pinService.imageTest(file);
 	}
+
+	@ApiOperation(value = "핀 추천")
+	@PutMapping("/{id}/like")
+	public ResponseEntity<Void> likePin(@RequestHeader(value = "Authorization") final String token,
+			@PathVariable("id") final int id) {
+		pinService.likePin(token, id);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "핀 신고")
+	@PutMapping("/{id}/report")
+	public ResponseEntity<Void> reportPin(@RequestHeader(value = "Authorization") final String token,
+			@PathVariable("id") final int id) {
+		pinService.reportPin(token, id);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
 }

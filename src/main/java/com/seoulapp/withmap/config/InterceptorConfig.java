@@ -11,6 +11,7 @@ import com.seoulapp.withmap.Interceptor.AuthInterceptor;
 public class InterceptorConfig implements WebMvcConfigurer {
     private static final String[] EXCLUDE_PATHS = {
     		"/withmap/signin/**",
+    		"/withmap/users/**/check",
             "/v2/api-docs",
             "/configuration/security", 
             "/configuration/ui",
@@ -22,7 +23,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
  
     @Autowired
     private AuthInterceptor authInterceptor;
- 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)

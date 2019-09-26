@@ -14,6 +14,7 @@ import com.seoulapp.withmap.exception.ExpiredTokenException;
 import com.seoulapp.withmap.exception.NotFoundException;
 import com.seoulapp.withmap.exception.NotValidTokenException;
 import com.seoulapp.withmap.exception.UnAuthenticationException;
+import com.seoulapp.withmap.model.Overlap;
 import com.seoulapp.withmap.model.Token;
 import com.seoulapp.withmap.model.User;
 import com.seoulapp.withmap.model.error.ErrorType;
@@ -52,6 +53,22 @@ public class UserServiceImpl implements UserService {
 		user.setPoint(5000);
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		userDao.insert(user);
+	}
+	
+	@Override
+	public Overlap checkQueryExist(final String content, final String query) {
+		
+		boolean isOverlapped;
+		
+		if(content.equals("email")) {
+			isOverlapped = userDao.isExistEmail(query);
+		} else if(content.equals("name")) {
+			isOverlapped = userDao.isExistName(query);
+		} else {
+			throw new BadRequestException(ErrorType.BAD_REQUEST, "유효한 중복확인 요청 형식이 아닙니다.");
+		}
+			
+		return new Overlap(isOverlapped);
 	}
 
 	@Override

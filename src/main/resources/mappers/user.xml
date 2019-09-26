@@ -50,4 +50,12 @@
 		where email = #{email};
 	</select>
 
+	<select id="isExistEmail" parameterType="String" resultType="boolean">
+		SELECT EXISTS(SELECT 1 FROM user WHERE email=#{email})
+	</select>
+	
+	<select id="isExistName" parameterType="String" resultType="boolean">
+		SELECT EXISTS(SELECT 1 FROM user WHERE name=#{name})
+	</select>
+	
 </mapper>

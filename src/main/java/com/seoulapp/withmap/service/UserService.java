@@ -1,8 +1,6 @@
 package com.seoulapp.withmap.service;
 
-import java.util.List;
-
-import com.seoulapp.withmap.model.Pin;
+import com.seoulapp.withmap.model.Overlap;
 import com.seoulapp.withmap.model.Token;
 import com.seoulapp.withmap.model.User;
 
@@ -12,7 +10,9 @@ public interface UserService {
 	
 	// 회원 가입
 	void signUp(User user);
-
+	
+	Overlap checkQueryExist(final String content, final String query);
+	
 	// 로그인(Token 반환)
 	Token signIn(String email, String password);
 	

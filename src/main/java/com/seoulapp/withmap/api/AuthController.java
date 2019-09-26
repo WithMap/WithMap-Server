@@ -30,10 +30,5 @@ public class AuthController {
         Token token = userService.signIn(login.getEmail(), login.getPassword());
         return new ResponseEntity<Token>(token, HttpStatus.OK);
     }
-    
-    @GetMapping("/test")
-    public String test() {
-    	return "test";
-    }
 
 }
