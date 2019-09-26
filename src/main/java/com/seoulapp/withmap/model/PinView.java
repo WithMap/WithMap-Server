@@ -9,16 +9,15 @@ import lombok.Setter;
 @Setter
 public class PinView {
 		private Pin pin;
-		private Object DetailContents;
 		private List<PinImage> pinImages;
-		private boolean isMine;
+		private Object DetailContents;
+		private boolean isMine = false;
+		private boolean isRecommended = false;
 
-		//TODO : DetailContents 담기
-		public PinView(final Pin pin, final List<PinImage> pinImages, boolean isMine) {
+		public PinView(final Pin pin, final List<PinImage> pinImages) {
 			super();
 			this.pin = pin;
 			this.pinImages = pinImages;
-			this.isMine = isMine;
 		}
 
 }

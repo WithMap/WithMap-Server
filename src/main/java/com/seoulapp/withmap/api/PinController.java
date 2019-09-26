@@ -65,11 +65,13 @@ public class PinController {
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
+	@ResponseBody
 	@ApiOperation(value = "핀 수정하기")
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> updatePin(@RequestHeader(value = "Authorization") final String token,
-			@PathVariable("id") final int id, @RequestBody @Valid final Pin pin, MultipartFile[] images) {
-		pinService.updatePin(token, pin, images);
+			@PathVariable("id") final int id, @RequestBody @Valid final Pin pin,
+			@RequestPart("files") MultipartFile[] files, @RequestParam Map<String, String> detailContents) {
+		pinService.updatePin(token, pin, files, detailContents);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 

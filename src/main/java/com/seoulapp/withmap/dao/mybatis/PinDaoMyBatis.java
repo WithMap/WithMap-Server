@@ -41,6 +41,11 @@ public class PinDaoMyBatis extends CommonDaoSupport implements PinDao {
 	public void update(final Pin pin) {
 		getSqlSession().update("com.seoulapp.withmap.pin.update", pin);		
 	}
+	
+	@Override
+	public void updateLikeCount(final int id) {
+		getSqlSession().update("com.seoulapp.withmap.pin.updateLikeCount", id);		
+	}
 
 	@Override
 	public void delete(final int id) {

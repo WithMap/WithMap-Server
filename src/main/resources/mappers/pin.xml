@@ -86,6 +86,12 @@
 			, comment = #{comment}
 		WHERE id = #{id}
 	</update>
+	
+	<update id="updateLikeCount" parameterType="int">
+		UPDATE pin
+		SET like_count = like_count + 1
+		WHERE id = #{id}
+	</update>
 
 	<delete id="delete" parameterType="int">
 		DELETE *

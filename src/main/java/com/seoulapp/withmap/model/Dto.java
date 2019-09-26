@@ -12,5 +12,13 @@ import lombok.ToString;
 public class Dto {
 	private DateTime crtDate;
 	private DateTime updDate;
+	
+	public String getCrtDate() {
+		return crtDate.toString();
+	}
+	
+	public String getUpdDate() {
+		return updDate.toString();
+	}
 }
 

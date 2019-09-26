@@ -11,5 +11,6 @@ public interface PinDao {
 	Pin get(final int id);
 	int insert(final Pin pin);
 	void update(final Pin pin);
+	void updateLikeCount(final int id);
 	void delete(final int id);
 }

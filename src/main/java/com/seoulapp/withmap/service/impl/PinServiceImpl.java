@@ -52,10 +52,10 @@ public class PinServiceImpl implements PinService {
 
 	@Autowired
 	private RoadDao roadDao;
-	
+
 	@Autowired
 	private LikeLogDao likeLogDao;
-	
+
 	@Autowired
 	private ReportLogDao reportLogDao;
 
@@ -89,11 +89,19 @@ public class PinServiceImpl implements PinService {
 
 		if (pin == null)
 			throw new NotFoundException(ErrorType.NOT_FOUND, "존재하지 않는 핀입니다.");
+
+		PinView pinView = new PinView(pin, pinImageDao.getAll(id));
 		
-		boolean isMine = userService.findIdByToken(token) == pin.getUserId()? true : false;
+		// 자신의 글인지 확인
+		int userId = userService.findIdByToken(token);
+		Integer pinAuthorId = pin.getUserId();
+		if(pinAuthorId != null) {
+			pinView.setMine(userId == pinAuthorId.intValue());
+		}
 
-		PinView pinView = new PinView(pin, pinImageDao.getAll(id), isMine);
-
+		//TODO : 이미 추천한 글인지 확인
+		
+		
 		// type이 restroom 일 경우 restroom 정보 추가
 		if (PinType.RESTROOM.match(pin.getType()))
 			pinView.setDetailContents(restroomDao.getRestroom(id));
@@ -144,12 +152,8 @@ public class PinServiceImpl implements PinService {
 
 	@Override
 	@Transactional
-	public void updatePin(final String token, final Pin pin, final MultipartFile[] images) {
-
-		// 요청자에게 수정 권한이 존재하는지 확인
-		int id = userService.findIdByToken(token);
-		if (id != pin.getId())
-			throw new UnAuthorizedException(ErrorType.UNAUTHORIZED, "pin 수정 권한이 없습니다.");
+	public void updatePin(final String token, final Pin pin, final MultipartFile[] images,
+			final Map<String, String> detailContents) {
 
 		pinDao.update(pin);
 
@@ -189,17 +193,17 @@ public class PinServiceImpl implements PinService {
 	public String imageTest(MultipartFile file) {
 		return fileUploadService.upload(file);
 	}
-	
+
 	@Override
 	@Transactional
 	public void likePin(String token, int pinId) {
-		
+
 		int userId = userService.findIdByToken(token);
 
 		// 로그 확인 후 중복 확인 체크
 		List<LikeLog> likeLogs = likeLogDao.getList(userId);
-		for(LikeLog log : likeLogs) {
-			if(log.getPinId() == pinId)
+		for (LikeLog log : likeLogs) {
+			if (log.getPinId() == pinId)
 				throw new AlreadyExistException(ErrorType.CONFLICT, "이미 추천한 PIN 입니다.");
 		}
 
@@ -207,15 +211,12 @@ public class PinServiceImpl implements PinService {
 		LikeLog likeLog = new LikeLog();
 		likeLog.setPinId(pinId);
 		likeLog.setUserId(userId);
-		
+
 		likeLogDao.insert(likeLog);
 
-		// TODO : like 컬럼만 따로 update하도록
 		// 좋아요
-		Pin pin = pinDao.get(pinId);
-		pin.setLikeCount(pin.getLikeCount() + 1);
-		pinDao.update(pin);
-		
+		pinDao.updateLikeCount(pinId);
+
 	}
 
 	@Override
@@ -225,16 +226,16 @@ public class PinServiceImpl implements PinService {
 
 		// 로그 확인 후 중복 확인 체크
 		List<ReportLog> reportLogs = reportLogDao.getList(userId);
-		for(ReportLog log : reportLogs) {
-			if(log.getPinId() == pinId)
+		for (ReportLog log : reportLogs) {
+			if (log.getPinId() == pinId)
 				throw new AlreadyExistException(ErrorType.CONFLICT, "이미 신고한 PIN 입니다.");
 		}
-		
+
 		// 로그 추가
 		ReportLog reportLog = new ReportLog();
 		reportLog.setPinId(pinId);
 		reportLog.setUserId(userId);
-		
+
 		reportLogDao.insert(reportLog);
 	}
 }

@@ -15,7 +15,7 @@ public class Pin extends Dto {
 
 	private int id;
 
-	private int userId;
+	private Integer userId;
 
 	private String unimprovedName;
 
