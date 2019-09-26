@@ -1,5 +1,6 @@
 package com.seoulapp.withmap.api;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +52,7 @@ public class PinController {
 	@GetMapping()
 	public ResponseEntity<List<Pin>> getPins(@RequestParam(value = "latitude") final double latitude,
 			@RequestParam(value = "longitude") double longitude,
-			@RequestParam(value = "radius", required = false, defaultValue = "100") final int radius) {
+			@RequestParam(value = "radius", required = false, defaultValue = "1000") final int radius) {
 		List<Pin> pins = pinService.getPins(latitude, longitude, radius);
 		return new ResponseEntity<List<Pin>>(pins, HttpStatus.OK);
 	}
@@ -60,7 +61,7 @@ public class PinController {
 	@ApiOperation(value = "핀 작성하기")
 	@PostMapping()
 	public ResponseEntity<Void> savePin(@RequestHeader("Authorization") String token, @RequestPart @Valid final Pin pin,
-			@RequestPart("files") MultipartFile[] files, @RequestParam Map<String, String> detailContents) {
+			@RequestPart("files") MultipartFile[] files, @RequestParam Map<String, String> detailContents) throws IOException {
 		pinService.savePin(token, pin, files, detailContents);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
@@ -68,10 +69,9 @@ public class PinController {
 	@ResponseBody
 	@ApiOperation(value = "핀 수정하기")
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> updatePin(@RequestHeader(value = "Authorization") final String token,
-			@PathVariable("id") final int id, @RequestBody @Valid final Pin pin,
-			@RequestPart("files") MultipartFile[] files, @RequestParam Map<String, String> detailContents) {
-		pinService.updatePin(token, pin, files, detailContents);
+	public ResponseEntity<Void> updatePin(@PathVariable("id") final int id, @RequestBody @Valid final Pin pin,
+			@RequestPart("files") MultipartFile[] files, @RequestParam Map<String, String> detailContents) throws IOException {
+		pinService.updatePin(pin, files, detailContents);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
@@ -81,15 +81,6 @@ public class PinController {
 			@PathVariable("id") final int id) {
 		pinService.deletePin(token, id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
-	}
-
-	@ApiOperation(value = "이미지 업로드 테스트중")
-	@ResponseBody
-	@ApiImplicitParams({
-			@ApiImplicitParam(name = "Authorization", value = "인증토큰", required = true, dataType = "String", paramType = "header") })
-	@PostMapping("/test")
-	public String imageTest(@RequestPart("file") MultipartFile file) {
-		return pinService.imageTest(file);
 	}
 
 	@ApiOperation(value = "핀 추천")

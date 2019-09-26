@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class PinImage {
+public class PinImage extends Dto {
 
 	@JsonIgnore
 	private int pinId;

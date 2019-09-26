@@ -1,5 +1,6 @@
 package com.seoulapp.withmap.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +59,7 @@ public class PinServiceImpl implements PinService {
 
 	@Autowired
 	private ReportLogDao reportLogDao;
-
+	
 	@Override
 	public List<Pin> getPins(final double latitude, final double longitude, final int radius) {
 
@@ -116,7 +117,7 @@ public class PinServiceImpl implements PinService {
 	@Override
 	@Transactional
 	public void savePin(final String token, final Pin pin, final MultipartFile[] images,
-			final Map<String, String> detailContents) {
+			final Map<String, String> detailContents) throws IOException {
 		int userId = userService.findIdByToken(token);
 
 		pin.setUserId(userId);
@@ -126,43 +127,27 @@ public class PinServiceImpl implements PinService {
 		if (images != null && images.length != 0)
 			pinImageDao.insert(getPinImages(images, pin.getId(), pin.isState()));
 
-		// type 으로 분류
-		switch (PinType.valueOf(pin.getType())) {
-		case OBSTACLE:
-		case CURB:
-		case DIRTROAD:
-		case NARROWROAD:
-			Road road = new Road();
-			road.setId(pin.getId());
-			road.setComment(detailContents.get("comment"));
-
-			roadDao.insert(road);
-			break;
-		case RESTROOM:
-			Restroom restroom = new Restroom();
-
-			restroom.setId(pin.getId());
-			restroom.setUseableTime(detailContents.get("useableTime"));
-			restroom.setDepartmentNumber(detailContents.get("departmentNumber"));
-
-			restroomDao.insert(restroom);
-			break;
-		case RESTAURANT:
-			break;
-		}
+		int pinId = pin.getId();
+		PinType pinType = PinType.valueOf(pin.getType());
+		setDetailContents(pinId, pinType, detailContents, "SAVE");
 	}
+
 
 	@Override
 	@Transactional
-	public void updatePin(final String token, final Pin pin, final MultipartFile[] images,
-			final Map<String, String> detailContents) {
+	public void updatePin(final Pin pin, final MultipartFile[] images,
+			final Map<String, String> detailContents) throws IOException {
 
 		pinDao.update(pin);
 
-		if (images != null) {
+		if (images != null && images.length != 0) {
 			List<PinImage> pinImages = getPinImages(images, pin.getId(), pin.isState());
 			pinImageDao.insert(pinImages);
 		}
+		
+		int pinId = pin.getId();
+		PinType pinType = PinType.valueOf(pin.getType());
+		setDetailContents(pinId, pinType, detailContents, "UPDATE");
 	}
 
 	@Override
@@ -177,24 +162,7 @@ public class PinServiceImpl implements PinService {
 		pinDao.delete(id);
 	}
 
-	private List<PinImage> getPinImages(MultipartFile[] images, int pinId, boolean state) {
 
-		List<PinImage> pinImages = new ArrayList<PinImage>();
-		for (MultipartFile image : images) {
-			if (images.length != 0) {
-				String url = fileUploadService.upload(image);
-
-				PinImage pinImage = PinImage.builder().pinId(pinId).state(state).imagePath(url).build();
-				pinImages.add(pinImage);
-			}
-		}
-		return pinImages;
-	}
-
-	@Override
-	public String imageTest(MultipartFile file) {
-		return fileUploadService.upload(file);
-	}
 
 	@Override
 	@Transactional
@@ -240,4 +208,52 @@ public class PinServiceImpl implements PinService {
 
 		reportLogDao.insert(reportLog);
 	}
+	
+	private List<PinImage> getPinImages(MultipartFile[] images, int pinId, boolean state) throws IOException {
+		
+		List<PinImage> pinImages = new ArrayList<PinImage>();
+		for (MultipartFile image : images) {
+			if (images.length != 0) {
+				String url = fileUploadService.upload(image);
+				PinImage pinImage = PinImage.builder().pinId(pinId).state(state).imagePath(url).build();
+				pinImages.add(pinImage);
+			}
+		}
+		return pinImages;
+	}
+
+	private void setDetailContents(int pinId, PinType pinType, Map<String, String> detailContents, String method) {
+		switch (pinType) {
+		case OBSTACLE:
+		case CURB:
+		case DIRTROAD:
+		case NARROWROAD:
+			Road road = new Road();
+			road.setId(pinId);
+			road.setComment(detailContents.get("comment"));
+
+			// ㅠㅠ구리지만....
+			if(method.equals("SAVE"))
+				roadDao.insert(road);
+			else if(method.equals("UPDATE"))
+				roadDao.update(road);
+			break;
+		case RESTROOM:
+			Restroom restroom = new Restroom();
+
+			restroom.setId(pinId);
+			restroom.setUseableTime(detailContents.get("useableTime"));
+			restroom.setDepartmentNumber(detailContents.get("departmentNumber"));
+
+			if(method.equals("SAVE"))
+				restroomDao.insert(restroom);
+			else if(method.equals("UPDATE"))
+				restroomDao.update(restroom);
+			break;
+		case RESTAURANT:
+			break;
+		}
+		
+	}
+
 }

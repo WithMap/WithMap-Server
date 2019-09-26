@@ -1,5 +1,6 @@
 package com.seoulapp.withmap.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -11,14 +12,12 @@ import com.seoulapp.withmap.model.PinView;
 public interface PinService {
 
 	void savePin(final String token, final Pin pin, final MultipartFile[] images,
-			final Map<String, String> detailContents);
+			final Map<String, String> detailContents) throws IOException;
 
-	void updatePin(final String token, final Pin pin, final MultipartFile[] images,
-			final Map<String, String> detailContents);
+	void updatePin(final Pin pin, final MultipartFile[] images,
+			final Map<String, String> detailContents) throws IOException;
 
 	void deletePin(final String token, final int id);
-
-	String imageTest(MultipartFile file);
 
 	void likePin(final String token, final int pinId);
 
