@@ -17,6 +17,7 @@ import com.seoulapp.withmap.dao.ReportLogDao;
 import com.seoulapp.withmap.dao.RestroomDao;
 import com.seoulapp.withmap.dao.RoadDao;
 import com.seoulapp.withmap.exception.AlreadyExistException;
+import com.seoulapp.withmap.exception.BadRequestException;
 import com.seoulapp.withmap.exception.NoContentException;
 import com.seoulapp.withmap.exception.NotFoundException;
 import com.seoulapp.withmap.exception.UnAuthorizedException;
@@ -118,6 +119,11 @@ public class PinServiceImpl implements PinService {
 	@Transactional
 	public void savePin(final String token, final Pin pin, final MultipartFile[] images,
 			final Map<String, String> detailContents) throws IOException {
+		
+		// TODO 식당 정보 정의되면 주석 풀기
+//		if(detailContents == null || detailContents.isEmpty())
+//			throw new BadRequestException(ErrorType.BAD_REQUEST, "핀 상세 정보가 없습니다.");
+		
 		int userId = userService.findIdByToken(token);
 
 		pin.setUserId(userId);
@@ -135,15 +141,14 @@ public class PinServiceImpl implements PinService {
 
 	@Override
 	@Transactional
-	public void updatePin(final Pin pin, final MultipartFile[] images,
+	public void updatePin(final int id, final Pin pin, final MultipartFile[] images,
 			final Map<String, String> detailContents) throws IOException {
 
+		pin.setId(id);
 		pinDao.update(pin);
 
-		if (images != null && images.length != 0) {
-			List<PinImage> pinImages = getPinImages(images, pin.getId(), pin.isState());
-			pinImageDao.insert(pinImages);
-		}
+		if (images != null && images.length != 0)
+			pinImageDao.insert(getPinImages(images, pin.getId(), pin.isState()));
 		
 		int pinId = pin.getId();
 		PinType pinType = PinType.valueOf(pin.getType());

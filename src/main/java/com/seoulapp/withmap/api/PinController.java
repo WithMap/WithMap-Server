@@ -68,10 +68,12 @@ public class PinController {
 
 	@ResponseBody
 	@ApiOperation(value = "핀 수정하기")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "Authorization", value = "인증토큰", required = true, dataType = "String", paramType = "header") })
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> updatePin(@PathVariable("id") final int id, @RequestBody @Valid final Pin pin,
+	public ResponseEntity<Void> updatePin(@PathVariable("id") final int id, @RequestPart @Valid final Pin pin,
 			@RequestPart("files") MultipartFile[] files, @RequestParam Map<String, String> detailContents) throws IOException {
-		pinService.updatePin(pin, files, detailContents);
+		pinService.updatePin(id, pin, files, detailContents);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 

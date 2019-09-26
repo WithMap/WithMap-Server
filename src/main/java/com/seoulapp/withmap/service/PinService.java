@@ -14,7 +14,7 @@ public interface PinService {
 	void savePin(final String token, final Pin pin, final MultipartFile[] images,
 			final Map<String, String> detailContents) throws IOException;
 
-	void updatePin(final Pin pin, final MultipartFile[] images,
+	void updatePin(final int id, final Pin pin, final MultipartFile[] images,
 			final Map<String, String> detailContents) throws IOException;
 
 	void deletePin(final String token, final int id);
