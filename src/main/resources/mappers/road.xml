@@ -6,20 +6,15 @@
 		INSERT INTO road (
 			id
 			, comment
-			, crt_date
-			, upd_date
 		) values ( 
 			#{id}
 			, #{comment}
-		 	, current_timestamp
-		 	, current_timestamp
 		 ) 
 	 </insert>
 
 	<update id="update" parameterType="Road">
 		UPDATE road
-		SET upd_date = current_timestamp
-			, comment = #{comment}
+		SET comment = #{comment}
 		WHERE id = #{id}
 	</update>
 	

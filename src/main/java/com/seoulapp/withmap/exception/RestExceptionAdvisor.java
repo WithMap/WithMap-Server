@@ -18,13 +18,14 @@ import com.seoulapp.withmap.model.error.ErrorType;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class RestExceptionAdvisor {
 
-	@ExceptionHandler(UnAuthenticationException.class)
+	@ExceptionHandler({ UnAuthenticationException.class, UnAuthorizedException.class, ExpiredTokenException.class,
+			NotValidTokenException.class })
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	public ErrorEntity handleUnAuthenticationException(ErrorEntityException exception) {
 		return exception.entity();
 	}
 
-	@ExceptionHandler({ UnAuthorizedException.class, ExpiredTokenException.class, NotValidTokenException.class })
+	@ExceptionHandler(ForbiddenException.class)
 	@ResponseStatus(HttpStatus.FORBIDDEN)
 	public ErrorEntity handleUnAuthorizedException(ErrorEntityException exception) {
 		return exception.entity();
@@ -41,13 +42,13 @@ public class RestExceptionAdvisor {
 	public ErrorEntity handleBadRequestException(ErrorEntityException exception) {
 		return exception.entity();
 	}
-	
+
 	@ExceptionHandler(NoContentException.class)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ErrorEntity handleNoContentException(ErrorEntityException exception) {
 		return exception.entity();
 	}
-	
+
 	@ExceptionHandler(AlreadyExistException.class)
 	@ResponseStatus(HttpStatus.CONFLICT)
 	public ErrorEntity handleAlreadyExistException(ErrorEntityException exception) {
@@ -60,11 +61,11 @@ public class RestExceptionAdvisor {
 		return new ErrorEntityException(ErrorType.BAD_REQUEST,
 				exception.getBindingResult().getAllErrors().get(0).getDefaultMessage()).entity();
 	}
-	
-	@ExceptionHandler({MissingServletRequestParameterException.class, HttpMessageNotReadableException.class})
+
+	@ExceptionHandler({ MissingServletRequestParameterException.class, HttpMessageNotReadableException.class })
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorEntity handleMissingServletRequestParameterException(Exception exception) {
 		return new ErrorEntityException(ErrorType.BAD_REQUEST, "유효한 형식의 쿼리 요청이 아닙니다.").entity();
 	}
-	
+
 }

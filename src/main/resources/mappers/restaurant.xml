@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seoulapp.withmap.restaurant">
+	
+	<insert id="insert" parameterType="Restaurant"> 
+		INSERT INTO restaurant (
+			id
+			, name
+			, number
+			, classification
+			, site
+			, useable_time
+			, comment
+		) values ( 
+			#{id}
+			, #{name}
+			, #{number}
+			, #{classification}
+			, #{site}
+			, #{useableTime}
+			, #{comment}
+		 ) 
+	 </insert>
+
+	<update id="update" parameterType="Restaurant">
+		UPDATE restaurant
+		SET name = #{name}
+			, number = #{number}
+			, classification = #{classification}
+			, site = #{site}
+			, useable_time = #{useableTime}
+			, comment = #{comment}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		DELETE *
+		FROM restaurant
+		WHERE id = #{id}
+	</delete>
+		    
+	<select id="select" parameterType="int" resultType="Restaurant">
+		SELECT *
+		FROM restaurant
+		where id = #{id};
+	</select>
+
+</mapper>
