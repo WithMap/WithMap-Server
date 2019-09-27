@@ -3,6 +3,8 @@ package com.seoulapp.withmap.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,11 +60,13 @@ public class PinServiceImpl implements PinService {
 
 	@Autowired
 	private ReportLogDao reportLogDao;
+	
+	private static final double RADIUS = 0.01;
 
 	@Override
-	public List<Pin> getPins(final double latitude, final double longitude, final int radius) {
+	public List<Pin> getPins(final double latitude, final double longitude) {
 
-		List<Pin> pins = pinDao.getPins(latitude, longitude, radius);
+		List<Pin> pins = pinDao.getPins(latitude, longitude, RADIUS);
 
 		if (pins.isEmpty()) {
 			throw new NoContentException(ErrorType.NO_CONTENT, "좌표 주위에 핀이 존재하지 않습니다.");
@@ -87,26 +91,41 @@ public class PinServiceImpl implements PinService {
 	public PinView getPinById(final String token, final int id) {
 		Pin pin = pinDao.get(id);
 
+		int userId = userService.findIdByToken(token);
+
 		if (pin == null)
 			throw new NotFoundException(ErrorType.NOT_FOUND, "존재하지 않는 핀입니다.");
 
 		PinView pinView = new PinView(pin, pinImageDao.getAll(id));
-		
+
 		// 자신의 글인지 확인
-		int userId = userService.findIdByToken(token);
 		Integer pinAuthorId = pin.getUserId();
-		if(pinAuthorId != null) {
+		if (pinAuthorId != null) {
 			pinView.setMine(userId == pinAuthorId.intValue());
 		}
 
-		//TODO : 이미 추천한 글인지 확인
-		
-		
-		// type이 restroom 일 경우 restroom 정보 추가
-		if (PinType.RESTROOM.match(pin.getType()))
-			pinView.setDetailContents(restroomDao.getRestroom(id));
+		// 이미 추천한 글인지 확인
+		List<LikeLog> likes = likeLogDao.getList(userId);
+		Set<Integer> pins = likes.stream().map(l -> l.getPinId()).collect(Collectors.toSet());
+		// 추천 로그가 없으면 자기 자신 추천 x
+		pinView.setRecommended(false);
+		pins.stream().filter(pinId -> pinId == id).peek(pinId -> pinView.setRecommended(true)).findFirst();
 
-		System.out.println(pinView.getDetailContents());
+		// 세부 사항 추가 TODO : 식당 정보 추가
+		switch (PinType.valueOf(pin.getType())) {
+		case OBSTACLE:
+		case CURB:
+		case DIRTROAD:
+		case NARROWROAD:
+			Road road = roadDao.get(id);
+			pinView.setDetailContents(road);
+		case RESTROOM:
+			Restroom restroom = restroomDao.get(id);
+			pinView.setDetailContents(restroom);
+			break;
+		case RESTAURANT:
+			break;
+		}
 
 		return pinView;
 	}
@@ -161,6 +180,32 @@ public class PinServiceImpl implements PinService {
 			List<PinImage> pinImages = getPinImages(images, pin.getId(), pin.isState());
 			pinImageDao.insert(pinImages);
 		}
+
+		// type 으로 분류
+		switch (PinType.valueOf(pin.getType())) {
+		case OBSTACLE:
+		case CURB:
+		case DIRTROAD:
+		case NARROWROAD:
+			Road road = new Road();
+			road.setId(pin.getId());
+			road.setComment(detailContents.get("comment"));
+
+			roadDao.update(road);
+			break;
+		case RESTROOM:
+			Restroom restroom = new Restroom();
+
+			restroom.setId(pin.getId());
+			restroom.setUseableTime(detailContents.get("useableTime"));
+			restroom.setDepartmentNumber(detailContents.get("departmentNumber"));
+
+			restroomDao.update(restroom);
+			break;
+		case RESTAURANT:
+			break;
+		}
+
 	}
 
 	@Override
@@ -172,21 +217,25 @@ public class PinServiceImpl implements PinService {
 		if (userId != id)
 			throw new UnAuthorizedException(ErrorType.UNAUTHORIZED, "pin 삭제 권한이 없습니다.");
 
-		pinDao.delete(id);
-	}
+		Pin pin = pinDao.get(id);
 
-	private List<PinImage> getPinImages(MultipartFile[] images, int pinId, boolean state) {
-
-		List<PinImage> pinImages = new ArrayList<PinImage>();
-		for (MultipartFile image : images) {
-			if (images.length != 0) {
-				String url = fileUploadService.upload(image);
-
-				PinImage pinImage = PinImage.builder().pinId(pinId).state(state).imagePath(url).build();
-				pinImages.add(pinImage);
-			}
+		// 세부 사항 삭제
+		switch (PinType.valueOf(pin.getType())) {
+		case OBSTACLE:
+		case CURB:
+		case DIRTROAD:
+		case NARROWROAD:
+			roadDao.delete(id);
+			break;
+		case RESTROOM:
+			restroomDao.delete(id);
+			break;
+		case RESTAURANT:
+			break;
 		}
-		return pinImages;
+
+		// 공통 사항 삭제
+		pinDao.delete(id);
 	}
 
 	@Override
@@ -238,4 +287,19 @@ public class PinServiceImpl implements PinService {
 
 		reportLogDao.insert(reportLog);
 	}
+
+	private List<PinImage> getPinImages(MultipartFile[] images, int pinId, boolean state) {
+
+		List<PinImage> pinImages = new ArrayList<PinImage>();
+		for (MultipartFile image : images) {
+			if (images.length != 0) {
+				String url = fileUploadService.upload(image);
+
+				PinImage pinImage = PinImage.builder().pinId(pinId).state(state).imagePath(url).build();
+				pinImages.add(pinImage);
+			}
+		}
+		return pinImages;
+	}
+
 }

@@ -10,6 +10,6 @@ public interface RestroomDao {
 
 	void delete(int id);
 
-	Restroom getRestroom(int id);
+	Restroom get(int id);
 
 }

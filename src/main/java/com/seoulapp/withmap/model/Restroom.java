@@ -11,12 +11,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Restroom extends Dto{
+public class Restroom{
 
 	private int id;
 	
 	private String useableTime;
 	
 	private String departmentNumber;
-
 }
