@@ -1,4 +1,4 @@
-package com.seoulapp.withmap.model;
+package com.seoulapp.withmap.model.pin;
 
 public enum PinType {
 	OBSTACLE(0), CURB(1), DIRTROAD(2), NARROWROAD(3), RESTROOM(4), RESTAURANT(5);

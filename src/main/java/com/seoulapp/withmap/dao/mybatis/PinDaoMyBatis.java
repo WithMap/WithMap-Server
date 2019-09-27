@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.seoulapp.withmap.dao.PinDao;
-import com.seoulapp.withmap.model.Pin;
+import com.seoulapp.withmap.model.pin.Pin;
 
 @Repository
 public class PinDaoMyBatis extends CommonDaoSupport implements PinDao {

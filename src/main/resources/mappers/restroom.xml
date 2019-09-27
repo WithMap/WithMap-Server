@@ -13,21 +13,16 @@
 			id
 			, useable_time
 			, department_number
-			, crt_date
-			, upd_date
 		) values ( 
 			#{id}
 			, #{useableTime}
 			, #{departmentNumber}
-		 	, current_timestamp
-		 	, current_timestamp
 		 ) 
 	 </insert>
 
 	<update id="update" parameterType="Restroom">
 		UPDATE restroom
-		SET upd_date = current_timestamp
-			, useable_time = #{useableTime}
+		SET useable_time = #{useableTime}
 			, department_number = #{departmentNumber}
 		WHERE id = #{id}
 	</update>

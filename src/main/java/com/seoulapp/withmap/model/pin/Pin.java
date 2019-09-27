@@ -1,4 +1,6 @@
-package com.seoulapp.withmap.model;
+package com.seoulapp.withmap.model.pin;
+
+import com.seoulapp.withmap.model.Dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

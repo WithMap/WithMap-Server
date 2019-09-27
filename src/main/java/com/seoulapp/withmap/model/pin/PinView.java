@@ -1,4 +1,4 @@
-package com.seoulapp.withmap.model;
+package com.seoulapp.withmap.model.pin;
 
 import java.util.List;
 

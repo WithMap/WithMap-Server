@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.seoulapp.withmap.model.Pin;
-import com.seoulapp.withmap.model.PinView;
+import com.seoulapp.withmap.model.pin.Pin;
+import com.seoulapp.withmap.model.pin.PinView;
 
 public interface PinService {
 

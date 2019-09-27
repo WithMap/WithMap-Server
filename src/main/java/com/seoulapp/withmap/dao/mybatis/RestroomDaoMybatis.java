@@ -3,7 +3,7 @@ package com.seoulapp.withmap.dao.mybatis;
 import org.springframework.stereotype.Repository;
 
 import com.seoulapp.withmap.dao.RestroomDao;
-import com.seoulapp.withmap.model.Restroom;
+import com.seoulapp.withmap.model.pin.detail.Restroom;
 
 @Repository
 public class RestroomDaoMybatis extends CommonDaoSupport implements RestroomDao {

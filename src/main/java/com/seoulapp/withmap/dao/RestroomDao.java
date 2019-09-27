@@ -1,6 +1,6 @@
 package com.seoulapp.withmap.dao;
 
-import com.seoulapp.withmap.model.Restroom;
+import com.seoulapp.withmap.model.pin.detail.Restroom;
 
 public interface RestroomDao {
 

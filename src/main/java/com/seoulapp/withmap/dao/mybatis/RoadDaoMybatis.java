@@ -3,7 +3,7 @@ package com.seoulapp.withmap.dao.mybatis;
 import org.springframework.stereotype.Component;
 
 import com.seoulapp.withmap.dao.RoadDao;
-import com.seoulapp.withmap.model.Road;
+import com.seoulapp.withmap.model.pin.detail.Road;
 
 @Component
 public class RoadDaoMybatis extends CommonDaoSupport implements RoadDao{

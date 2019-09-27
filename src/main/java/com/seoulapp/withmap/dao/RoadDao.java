@@ -1,6 +1,6 @@
 package com.seoulapp.withmap.dao;
 
-import com.seoulapp.withmap.model.Road;
+import com.seoulapp.withmap.model.pin.detail.Road;
 
 public interface RoadDao {
 

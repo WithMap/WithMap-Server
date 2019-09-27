@@ -22,15 +22,15 @@ import com.seoulapp.withmap.exception.AlreadyExistException;
 import com.seoulapp.withmap.exception.NoContentException;
 import com.seoulapp.withmap.exception.NotFoundException;
 import com.seoulapp.withmap.exception.UnAuthorizedException;
-import com.seoulapp.withmap.model.Pin;
-import com.seoulapp.withmap.model.PinImage;
-import com.seoulapp.withmap.model.PinType;
-import com.seoulapp.withmap.model.PinView;
-import com.seoulapp.withmap.model.Restroom;
-import com.seoulapp.withmap.model.Road;
 import com.seoulapp.withmap.model.error.ErrorType;
 import com.seoulapp.withmap.model.log.LikeLog;
 import com.seoulapp.withmap.model.log.ReportLog;
+import com.seoulapp.withmap.model.pin.Pin;
+import com.seoulapp.withmap.model.pin.PinImage;
+import com.seoulapp.withmap.model.pin.PinType;
+import com.seoulapp.withmap.model.pin.PinView;
+import com.seoulapp.withmap.model.pin.detail.Restroom;
+import com.seoulapp.withmap.model.pin.detail.Road;
 import com.seoulapp.withmap.service.FileUploadService;
 import com.seoulapp.withmap.service.PinService;
 import com.seoulapp.withmap.service.UserService;
@@ -120,6 +120,7 @@ public class PinServiceImpl implements PinService {
 		case NARROWROAD:
 			Road road = roadDao.get(id);
 			pinView.setDetailContents(road);
+			break;
 		case RESTROOM:
 			Restroom restroom = restroomDao.get(id);
 			pinView.setDetailContents(restroom);
