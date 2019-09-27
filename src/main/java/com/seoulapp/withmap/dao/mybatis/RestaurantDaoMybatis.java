@@ -1,8 +1,11 @@
 package com.seoulapp.withmap.dao.mybatis;
 
+import org.springframework.stereotype.Repository;
+
 import com.seoulapp.withmap.dao.RestaurantDao;
 import com.seoulapp.withmap.model.pin.detail.Restaurant;
 
+@Repository
 public class RestaurantDaoMybatis extends CommonDaoSupport implements RestaurantDao{
 
 	@Override
