@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.seoulapp.withmap.dao.PinImageDao;
-import com.seoulapp.withmap.model.pin.PinImage;
+import com.seoulapp.withmap.model.PinImage;
 
 @Repository
 public class PinImageDaoMyBatis extends CommonDaoSupport implements PinImageDao {

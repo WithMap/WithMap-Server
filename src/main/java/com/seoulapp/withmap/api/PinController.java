@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.seoulapp.withmap.model.pin.Pin;
-import com.seoulapp.withmap.model.pin.PinView;
+import com.seoulapp.withmap.model.Pin;
+import com.seoulapp.withmap.model.PinView;
 import com.seoulapp.withmap.service.PinService;
 
 import io.swagger.annotations.ApiImplicitParam;

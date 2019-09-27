@@ -1,6 +1,6 @@
 package com.seoulapp.withmap.dao;
 
-import com.seoulapp.withmap.model.pin.detail.Restaurant;
+import com.seoulapp.withmap.model.Restaurant;
 
 public interface RestaurantDao {
 	

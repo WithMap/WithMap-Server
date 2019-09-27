@@ -2,7 +2,7 @@ package com.seoulapp.withmap.dao;
 
 import java.util.List;
 
-import com.seoulapp.withmap.model.pin.Pin;
+import com.seoulapp.withmap.model.Pin;
 
 public interface PinDao {
 

@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.seoulapp.withmap.model.Overlap;
+import com.seoulapp.withmap.model.Pin;
 import com.seoulapp.withmap.model.User;
-import com.seoulapp.withmap.model.pin.Pin;
 import com.seoulapp.withmap.service.PinService;
 import com.seoulapp.withmap.service.UserService;
 

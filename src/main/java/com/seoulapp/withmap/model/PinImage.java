@@ -1,7 +1,6 @@
-package com.seoulapp.withmap.model.pin;
+package com.seoulapp.withmap.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.seoulapp.withmap.model.Dto;
 
 import lombok.Builder;
 import lombok.Getter;

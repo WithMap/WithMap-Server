@@ -1,4 +1,4 @@
-package com.seoulapp.withmap.model.pin.detail;
+package com.seoulapp.withmap.model;
 
 public enum Classification {
 

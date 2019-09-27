@@ -2,7 +2,7 @@ package com.seoulapp.withmap.dao;
 
 import java.util.List;
 
-import com.seoulapp.withmap.model.pin.PinImage;
+import com.seoulapp.withmap.model.PinImage;
 
 public interface PinImageDao {
 	List<PinImage> getAll(final int pinId);
