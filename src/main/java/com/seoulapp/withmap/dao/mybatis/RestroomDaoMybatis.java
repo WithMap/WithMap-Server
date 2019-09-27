@@ -24,7 +24,7 @@ public class RestroomDaoMybatis extends CommonDaoSupport implements RestroomDao 
 	}
 
 	@Override
-	public Restroom getRestroom(int id) {
+	public Restroom get(int id) {
 		return getSqlSession().selectOne("com.seoulapp.withmap.restroom.select", id);
 	}
 

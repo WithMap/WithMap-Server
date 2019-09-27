@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,9 +50,8 @@ public class PinController {
 			@ApiImplicitParam(name = "Authorization", value = "인증토큰", required = true, dataType = "String", paramType = "header") })
 	@GetMapping()
 	public ResponseEntity<List<Pin>> getPins(@RequestParam(value = "latitude") final double latitude,
-			@RequestParam(value = "longitude") double longitude,
-			@RequestParam(value = "radius", required = false, defaultValue = "1000") final int radius) {
-		List<Pin> pins = pinService.getPins(latitude, longitude, radius);
+			@RequestParam(value = "longitude") double longitude) {
+		List<Pin> pins = pinService.getPins(latitude, longitude);
 		return new ResponseEntity<List<Pin>>(pins, HttpStatus.OK);
 	}
 

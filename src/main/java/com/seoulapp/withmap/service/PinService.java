@@ -23,7 +23,7 @@ public interface PinService {
 
 	void reportPin(final String token, final int pinId);
 
-	List<Pin> getPins(final double latitude, final double longitude, final int radius);
+	List<Pin> getPins(final double latitude, final double longitude);
 
 	List<Pin> getUserPins(String token);
 

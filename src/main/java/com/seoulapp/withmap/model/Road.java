@@ -11,7 +11,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Road extends Dto {
+public class Road{
 	
 	private int id;
 	

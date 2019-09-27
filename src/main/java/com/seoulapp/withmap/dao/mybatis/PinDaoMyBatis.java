@@ -13,7 +13,7 @@ import com.seoulapp.withmap.model.Pin;
 public class PinDaoMyBatis extends CommonDaoSupport implements PinDao {
 
 	@Override
-	public List<Pin> getPins(final double latitude, final double longitude, final int radius) {
+	public List<Pin> getPins(final double latitude, final double longitude, final double radius) {
 		Map<String, Object> params = new HashMap<>();
 		
 		params.put("latitude", latitude);
