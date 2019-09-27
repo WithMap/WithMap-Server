@@ -17,7 +17,6 @@ import com.seoulapp.withmap.dao.ReportLogDao;
 import com.seoulapp.withmap.dao.RestroomDao;
 import com.seoulapp.withmap.dao.RoadDao;
 import com.seoulapp.withmap.exception.AlreadyExistException;
-import com.seoulapp.withmap.exception.BadRequestException;
 import com.seoulapp.withmap.exception.NoContentException;
 import com.seoulapp.withmap.exception.NotFoundException;
 import com.seoulapp.withmap.exception.UnAuthorizedException;
