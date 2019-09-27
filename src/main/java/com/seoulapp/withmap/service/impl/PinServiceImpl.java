@@ -16,6 +16,7 @@ import com.seoulapp.withmap.dao.LikeLogDao;
 import com.seoulapp.withmap.dao.PinDao;
 import com.seoulapp.withmap.dao.PinImageDao;
 import com.seoulapp.withmap.dao.ReportLogDao;
+import com.seoulapp.withmap.dao.RestaurantDao;
 import com.seoulapp.withmap.dao.RestroomDao;
 import com.seoulapp.withmap.dao.RoadDao;
 import com.seoulapp.withmap.exception.AlreadyExistException;
@@ -29,6 +30,7 @@ import com.seoulapp.withmap.model.pin.Pin;
 import com.seoulapp.withmap.model.pin.PinImage;
 import com.seoulapp.withmap.model.pin.PinType;
 import com.seoulapp.withmap.model.pin.PinView;
+import com.seoulapp.withmap.model.pin.detail.Restaurant;
 import com.seoulapp.withmap.model.pin.detail.Restroom;
 import com.seoulapp.withmap.model.pin.detail.Road;
 import com.seoulapp.withmap.service.FileUploadService;
@@ -61,6 +63,9 @@ public class PinServiceImpl implements PinService {
 
 	@Autowired
 	private ReportLogDao reportLogDao;
+
+	@Autowired
+	private RestaurantDao restaurantDao;
 
 	private static final double RADIUS = 0.01;
 
@@ -126,6 +131,8 @@ public class PinServiceImpl implements PinService {
 			pinView.setDetailContents(restroom);
 			break;
 		case RESTAURANT:
+			Restaurant restaurant = restaurantDao.get(id);
+			pinView.setDetailContents(restaurant);
 			break;
 		}
 
@@ -172,6 +179,16 @@ public class PinServiceImpl implements PinService {
 			restroomDao.insert(restroom);
 			break;
 		case RESTAURANT:
+			Restaurant restaurant = new Restaurant();
+
+			restaurant.setId(pin.getId());
+			restaurant.setName(detailContents.get("name"));
+			restaurant.setNumber(detailContents.get("number"));
+			restaurant.setSite(detailContents.get("site"));
+			restaurant.setUseableTime(detailContents.get("useableTime"));
+			restaurant.setComment(detailContents.get("comment"));
+
+			restaurantDao.insert(restaurant);
 			break;
 		}
 	}
@@ -195,22 +212,30 @@ public class PinServiceImpl implements PinService {
 		case CURB:
 		case DIRTROAD:
 		case NARROWROAD:
-			Road road = new Road();
-			road.setId(pin.getId());
+			Road road = roadDao.get(id);
 			road.setComment(detailContents.get("comment"));
 
 			roadDao.update(road);
 			break;
 		case RESTROOM:
-			Restroom restroom = new Restroom();
+			Restroom restroom = restroomDao.get(id);
 
-			restroom.setId(pin.getId());
-			restroom.setUseableTime(detailContents.get("useableTime"));
-			restroom.setDepartmentNumber(detailContents.get("departmentNumber"));
+			restroom.setUseableTime(detailContents.getOrDefault("useableTime", restroom.getUseableTime()));
+			restroom.setDepartmentNumber(
+					detailContents.getOrDefault("departmentNumber", restroom.getDepartmentNumber()));
 
 			restroomDao.update(restroom);
 			break;
 		case RESTAURANT:
+			Restaurant restaurant = restaurantDao.get(id);
+
+			restaurant.setName(detailContents.getOrDefault("name", restaurant.getName()));
+			restaurant.setNumber(detailContents.getOrDefault("number", restaurant.getNumber()));
+			restaurant.setSite(detailContents.getOrDefault("site", restaurant.getSite()));
+			restaurant.setUseableTime(detailContents.getOrDefault("useableTime", restaurant.getUseableTime()));
+			restaurant.setComment(detailContents.getOrDefault("comment", restaurant.getComment()));
+			
+			restaurantDao.update(restaurant);
 			break;
 		}
 
@@ -239,6 +264,7 @@ public class PinServiceImpl implements PinService {
 			restroomDao.delete(id);
 			break;
 		case RESTAURANT:
+			restaurantDao.delete(id);
 			break;
 		}
 
