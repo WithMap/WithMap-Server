@@ -1,5 +1,6 @@
 package com.seoulapp.withmap.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +61,7 @@ public class PinServiceImpl implements PinService {
 
 	@Autowired
 	private ReportLogDao reportLogDao;
-	
+
 	private static final double RADIUS = 0.01;
 
 	@Override
@@ -133,7 +134,12 @@ public class PinServiceImpl implements PinService {
 	@Override
 	@Transactional
 	public void savePin(final String token, final Pin pin, final MultipartFile[] images,
-			final Map<String, String> detailContents) {
+			final Map<String, String> detailContents) throws IOException {
+
+		// TODO 식당 정보 정의되면 주석 풀기
+//		if(detailContents == null || detailContents.isEmpty())
+//			throw new BadRequestException(ErrorType.BAD_REQUEST, "핀 상세 정보가 없습니다.");
+
 		int userId = userService.findIdByToken(token);
 
 		pin.setUserId(userId);
@@ -171,9 +177,10 @@ public class PinServiceImpl implements PinService {
 
 	@Override
 	@Transactional
-	public void updatePin(final String token, final Pin pin, final MultipartFile[] images,
-			final Map<String, String> detailContents) {
+	public void updatePin(final int id, final Pin pin, final MultipartFile[] images,
+			final Map<String, String> detailContents) throws IOException {
 
+		pin.setId(id);
 		pinDao.update(pin);
 
 		if (images != null) {
@@ -236,11 +243,7 @@ public class PinServiceImpl implements PinService {
 
 		// 공통 사항 삭제
 		pinDao.delete(id);
-	}
 
-	@Override
-	public String imageTest(MultipartFile file) {
-		return fileUploadService.upload(file);
 	}
 
 	@Override
@@ -288,13 +291,12 @@ public class PinServiceImpl implements PinService {
 		reportLogDao.insert(reportLog);
 	}
 
-	private List<PinImage> getPinImages(MultipartFile[] images, int pinId, boolean state) {
+	private List<PinImage> getPinImages(MultipartFile[] images, int pinId, boolean state) throws IOException {
 
 		List<PinImage> pinImages = new ArrayList<PinImage>();
 		for (MultipartFile image : images) {
 			if (images.length != 0) {
 				String url = fileUploadService.upload(image);
-
 				PinImage pinImage = PinImage.builder().pinId(pinId).state(state).imagePath(url).build();
 				pinImages.add(pinImage);
 			}

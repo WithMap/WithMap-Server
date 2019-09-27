@@ -19,8 +19,8 @@
 	<select id="selectList" parameterType="map" resultMap="PinMap">
 		select *
 		from pin
-		WHERE abs(ST_DISTANCE_SPHERE(POINT(#{longitude},
-		#{latitude}), POINT(longitude, latitude))) <![CDATA[ <= ]]>
+		WHERE abs(ST_DISTANCE_SPHERE(POINT(#{longitude}, #{latitude}), 
+		POINT(longitude, latitude))) <![CDATA[ <= ]]>
 		#{radius};
 	</select>
 
@@ -74,16 +74,6 @@
 			, unimproved_name = #{unimprovedName}
 			, improved_name = #{improvedName}
 			, state = #{state}
-		WHERE id = #{id}
-	</update>
-	
-	<!-- 자기 자신 글수정-->
-	<update id="updateMine" parameterType="Pin">
-		UPDATE pin
-		SET upd_date = current_timestamp
-			, user_id = #{userId}
-			, improved_name = #{improvedName}
-			, comment = #{comment}
 		WHERE id = #{id}
 	</update>
 	

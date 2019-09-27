@@ -16,7 +16,7 @@
 		where pin_id = #{pinId};
 	</select>
 	
-	<insert id="insert" parameterType="java.util.List"> 
+	<insert id="insert" parameterType="java.util.Map"> 
 		insert into pin_image(pin_id, image_path, state, crt_date, upd_date)
         values
         <foreach collection="list" item="item" separator=" , ">
