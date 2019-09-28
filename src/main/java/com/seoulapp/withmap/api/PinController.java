@@ -46,8 +46,6 @@ public class PinController {
 	}
 
 	@ApiOperation(value = "주위 모든 핀 조회")
-	@ApiImplicitParams({
-			@ApiImplicitParam(name = "Authorization", value = "인증토큰", required = true, dataType = "String", paramType = "header") })
 	@GetMapping()
 	public ResponseEntity<List<Pin>> getPins(@RequestParam(value = "latitude") final double latitude,
 			@RequestParam(value = "longitude") double longitude) {
