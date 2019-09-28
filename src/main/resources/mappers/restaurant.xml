@@ -5,7 +5,6 @@
 	<insert id="insert" parameterType="Restaurant"> 
 		INSERT INTO restaurant (
 			id
-			, name
 			, number
 			, classification
 			, site
@@ -13,7 +12,6 @@
 			, comment
 		) values ( 
 			#{id}
-			, #{name}
 			, #{number}
 			, #{classification}
 			, #{site}
@@ -24,8 +22,7 @@
 
 	<update id="update" parameterType="Restaurant">
 		UPDATE restaurant
-		SET name = #{name}
-			, number = #{number}
+		SET  number = #{number}
 			, classification = #{classification}
 			, site = #{site}
 			, useable_time = #{useableTime}

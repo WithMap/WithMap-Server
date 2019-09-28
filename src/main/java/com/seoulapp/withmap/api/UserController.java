@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.seoulapp.withmap.model.Overlap;
 import com.seoulapp.withmap.model.Pin;
 import com.seoulapp.withmap.model.User;
+import com.seoulapp.withmap.model.log.LogView;
 import com.seoulapp.withmap.service.PinService;
 import com.seoulapp.withmap.service.UserService;
 
@@ -63,5 +64,14 @@ public class UserController {
 		Overlap overlap = userService.checkQueryExist(content,query);
 		return new ResponseEntity<Overlap>(overlap, HttpStatus.OK);
 	}
+	
+	@ApiOperation(value = "유저 로그 조회")
+	@GetMapping("/log/{userId}")
+	public ResponseEntity<LogView> getUserLogs(@PathVariable("userId") int userId) {
+		LogView logView = userService.getLogsByUserId(userId);
+		return new ResponseEntity<LogView>(logView, HttpStatus.OK);
+	}
+	
+	
 
 }

@@ -182,7 +182,6 @@ public class PinServiceImpl implements PinService {
 			Restaurant restaurant = new Restaurant();
 
 			restaurant.setId(pin.getId());
-			restaurant.setName(detailContents.get("name"));
 			restaurant.setNumber(detailContents.get("number"));
 			restaurant.setSite(detailContents.get("site"));
 			restaurant.setUseableTime(detailContents.get("useableTime"));
@@ -229,7 +228,6 @@ public class PinServiceImpl implements PinService {
 		case RESTAURANT:
 			Restaurant restaurant = restaurantDao.get(id);
 
-			restaurant.setName(detailContents.getOrDefault("name", restaurant.getName()));
 			restaurant.setNumber(detailContents.getOrDefault("number", restaurant.getNumber()));
 			restaurant.setSite(detailContents.getOrDefault("site", restaurant.getSite()));
 			restaurant.setUseableTime(detailContents.getOrDefault("useableTime", restaurant.getUseableTime()));

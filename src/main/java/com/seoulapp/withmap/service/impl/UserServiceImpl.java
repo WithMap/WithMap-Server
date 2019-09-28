@@ -2,6 +2,7 @@ package com.seoulapp.withmap.service.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.List;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.seoulapp.withmap.dao.LikeLogDao;
+import com.seoulapp.withmap.dao.PinDao;
+import com.seoulapp.withmap.dao.ReportLogDao;
 import com.seoulapp.withmap.dao.UserDao;
 import com.seoulapp.withmap.exception.BadRequestException;
 import com.seoulapp.withmap.exception.ExpiredTokenException;
@@ -16,9 +20,13 @@ import com.seoulapp.withmap.exception.NotFoundException;
 import com.seoulapp.withmap.exception.NotValidTokenException;
 import com.seoulapp.withmap.exception.UnAuthenticationException;
 import com.seoulapp.withmap.model.Overlap;
+import com.seoulapp.withmap.model.Pin;
 import com.seoulapp.withmap.model.Token;
 import com.seoulapp.withmap.model.User;
 import com.seoulapp.withmap.model.error.ErrorType;
+import com.seoulapp.withmap.model.log.LikeLog;
+import com.seoulapp.withmap.model.log.LogView;
+import com.seoulapp.withmap.model.log.ReportLog;
 import com.seoulapp.withmap.service.UserService;
 
 import io.jsonwebtoken.Claims;
@@ -37,6 +45,15 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private PasswordEncoder bCryptPasswordEncoder;
+	
+	@Autowired
+	private LikeLogDao likeLogDao;
+	
+	@Autowired
+	private ReportLogDao reportLogDao;
+	
+	@Autowired
+	private PinDao pinDao;
 
 	@Value("spring.jwt.secret")
 	private String secret;
@@ -153,6 +170,20 @@ public class UserServiceImpl implements UserService {
 
 	private boolean isExistedUser(final String email) {
 		return userDao.get(email) != null;
+	}
+
+	@Override
+	public LogView getLogsByUserId(int userId) {
+		// 좋아요 로그 확인
+		List<LikeLog> likeLogs = likeLogDao.getList(userId);
+		
+		// 싫어요 로그 확인
+		List<ReportLog> reportLogs = reportLogDao.getList(userId);
+		
+		// 생성 핀  조회
+		List<Pin> pins = pinDao.getPins(userId);
+		
+		return new LogView(likeLogs, reportLogs, pins);
 	}
 
 

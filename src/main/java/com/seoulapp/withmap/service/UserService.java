@@ -1,8 +1,11 @@
 package com.seoulapp.withmap.service;
 
+import java.util.List;
+
 import com.seoulapp.withmap.model.Overlap;
 import com.seoulapp.withmap.model.Token;
 import com.seoulapp.withmap.model.User;
+import com.seoulapp.withmap.model.log.LogView;
 
 public interface UserService {
 
@@ -19,4 +22,7 @@ public interface UserService {
 	boolean isValidateToken(String token);
 	
 	int findIdByToken(String token);
+	
+	// user의 모든 로그 조회
+	LogView getLogsByUserId(int userId);
 }
