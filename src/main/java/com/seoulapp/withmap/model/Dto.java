@@ -12,11 +12,11 @@ public class Dto {
 	private DateTime updDate;
 	
 	public String getCrtDate() {
-		return crtDate.toString();
+		return crtDate.toString("yyyy-MM-dd hh:mm:ss");
 	}
 	
 	public String getUpdDate() {
-		return updDate.toString();
+		return updDate.toString("yyyy-MM-dd hh:mm:ss");
 	}
 
 }
