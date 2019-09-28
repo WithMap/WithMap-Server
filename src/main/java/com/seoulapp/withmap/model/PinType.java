@@ -1,7 +1,7 @@
 package com.seoulapp.withmap.model;
 
 public enum PinType {
-	OBSTACLE(0), CURB(1), DIRTROAD(2), NARROWROAD(3), RESTROOM(4), RESTAURANT(5);
+	OBSTACLE(1), CURB(2), DIRTROAD(3), NARROWROAD(4), RESTROOM(5), RESTAURANT(6);
 	
 	private final int value;
 
@@ -23,17 +23,17 @@ public enum PinType {
 
 	public static PinType valueOf(int value) {
 		switch (value) {
-		case 0:
-			return OBSTACLE;
 		case 1:
-			return CURB;
+			return OBSTACLE;
 		case 2:
-			return DIRTROAD;
+			return CURB;
 		case 3:
-			return NARROWROAD;
+			return DIRTROAD;
 		case 4:
-			return RESTROOM;
+			return NARROWROAD;
 		case 5:
+			return RESTROOM;
+		case 6:
 			return RESTAURANT;
 		default:
 			throw new AssertionError("unknow value  :" + value);
