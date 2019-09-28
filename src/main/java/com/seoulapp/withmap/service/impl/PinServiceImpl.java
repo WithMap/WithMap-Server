@@ -20,9 +20,10 @@ import com.seoulapp.withmap.dao.RestaurantDao;
 import com.seoulapp.withmap.dao.RestroomDao;
 import com.seoulapp.withmap.dao.RoadDao;
 import com.seoulapp.withmap.exception.AlreadyExistException;
+import com.seoulapp.withmap.exception.BadRequestException;
+import com.seoulapp.withmap.exception.ForbiddenException;
 import com.seoulapp.withmap.exception.NoContentException;
 import com.seoulapp.withmap.exception.NotFoundException;
-import com.seoulapp.withmap.exception.UnAuthorizedException;
 import com.seoulapp.withmap.model.Pin;
 import com.seoulapp.withmap.model.PinImage;
 import com.seoulapp.withmap.model.PinType;
@@ -144,9 +145,8 @@ public class PinServiceImpl implements PinService {
 	public void savePin(final String token, final Pin pin, final MultipartFile[] images,
 			final Map<String, String> detailContents) throws IOException {
 
-		// TODO 식당 정보 정의되면 주석 풀기
-//		if(detailContents == null || detailContents.isEmpty())
-//			throw new BadRequestException(ErrorType.BAD_REQUEST, "핀 상세 정보가 없습니다.");
+		if(detailContents == null || detailContents.isEmpty())
+			throw new BadRequestException(ErrorType.BAD_REQUEST, "핀 상세 정보가 없습니다.");
 
 		int userId = userService.findIdByToken(token);
 
@@ -196,6 +196,9 @@ public class PinServiceImpl implements PinService {
 	@Transactional
 	public void updatePin(final int id, final Pin pin, final MultipartFile[] images,
 			final Map<String, String> detailContents) throws IOException {
+		
+		if(detailContents == null || detailContents.isEmpty())
+			throw new BadRequestException(ErrorType.BAD_REQUEST, "핀 상세 정보가 없습니다.");
 
 		pin.setId(id);
 		pinDao.update(pin);
@@ -246,7 +249,7 @@ public class PinServiceImpl implements PinService {
 		// 요청자에게 삭제 권한이 존재하는지 확인
 		int userId = userService.findIdByToken(token);
 		if (userId != id)
-			throw new UnAuthorizedException(ErrorType.UNAUTHORIZED, "pin 삭제 권한이 없습니다.");
+			throw new ForbiddenException(ErrorType.FORBIDDEN, "pin 삭제 권한이 없습니다.");
 
 		Pin pin = pinDao.get(id);
 
