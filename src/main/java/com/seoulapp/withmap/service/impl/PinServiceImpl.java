@@ -145,9 +145,6 @@ public class PinServiceImpl implements PinService {
 	public void savePin(final String token, final Pin pin, final MultipartFile[] images,
 			final Map<String, String> detailContents) throws IOException {
 
-		if(detailContents == null || detailContents.isEmpty())
-			throw new BadRequestException(ErrorType.BAD_REQUEST, "핀 상세 정보가 없습니다.");
-
 		int userId = userService.findIdByToken(token);
 
 		pin.setUserId(userId);
