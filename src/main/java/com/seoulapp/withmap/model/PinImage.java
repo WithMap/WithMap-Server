@@ -1,6 +1,6 @@
 package com.seoulapp.withmap.model;
 
-import com.seoulapp.withmap.model.Pin.PinBuilder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,11 +9,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class PinImage {
+public class PinImage extends Dto {
 
+	@JsonIgnore
 	private int pinId;
 	
 	private String imagePath;
 	
-	private int state;
+	private boolean state;
 }

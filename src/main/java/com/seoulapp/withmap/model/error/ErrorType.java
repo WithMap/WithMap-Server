@@ -5,11 +5,13 @@ import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ErrorType {
+	NO_CONTENT("no content"),
     UNAUTHORIZED("unauthorized"),
     UNAUTHENTICATED("unauthenticated"),
     CONFLICT("conflict"),
     NOT_FOUND("not found"),
-    BAD_REQUEST("bad request");
+    BAD_REQUEST("bad request"),
+	FORBIDDEN("forbidden");
 
     private String errorType;
 

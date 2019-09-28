@@ -1,0 +1,14 @@
+diff a/src/main/java/com/seoulapp/withmap/service/impl/PinServiceImpl.java b/src/main/java/com/seoulapp/withmap/service/impl/PinServiceImpl.java	(rejected hunks)
+@@ -52,10 +52,10 @@
+ 
+ 	@Autowired
+ 	private RoadDao roadDao;
+-	
++
+ 	@Autowired
+ 	private LikeLogDao likeLogDao;
+-	
++
+ 	@Autowired
+ 	private ReportLogDao reportLogDao;
+ 

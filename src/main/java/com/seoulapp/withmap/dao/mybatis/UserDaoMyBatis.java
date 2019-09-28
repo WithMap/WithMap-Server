@@ -23,4 +23,18 @@ public class UserDaoMyBatis extends CommonDaoSupport implements UserDao {
 		return getSqlSession().selectOne("com.seoulapp.withmap.user.select", id);
 	}
 
+	@Override
+	public User get(String email) {
+		return getSqlSession().selectOne("com.seoulapp.withmap.user.selectByEmail", email);
+	}
+
+	@Override
+	public boolean isExistEmail(String email) {
+		return getSqlSession().selectOne("com.seoulapp.withmap.user.isExistEmail", email);
+	}
+	
+	@Override
+	public boolean isExistName(String name) {
+		return getSqlSession().selectOne("com.seoulapp.withmap.user.isExistName", name);
+	}
 }

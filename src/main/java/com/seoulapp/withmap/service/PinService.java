@@ -1,22 +1,32 @@
 package com.seoulapp.withmap.service;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
-import javax.validation.Valid;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.seoulapp.withmap.model.Pin;
+import com.seoulapp.withmap.model.PinView;
 
 public interface PinService {
 
-	List<Pin> getPins(final double latitude, final double longitude, final int radius);
-	
-	Pin getPinById(final int id);
-	
-	void savePin(final Pin pin);
-	
-	void updatePin(final Pin pin);
-	
-	void deletePin(final int id);
+	void savePin(final String token, final Pin pin, final MultipartFile[] images,
+			final Map<String, String> detailContents) throws IOException;
 
-	
+	void updatePin(final int id, final Pin pin, final MultipartFile[] images,
+			final Map<String, String> detailContents) throws IOException;
+
+	void deletePin(final String token, final int id);
+
+	void likePin(final String token, final int pinId);
+
+	void reportPin(final String token, final int pinId);
+
+	List<Pin> getPins(final double latitude, final double longitude);
+
+	List<Pin> getUserPins(String token);
+
+	PinView getPinById(final String token, final int id);
+
 }

@@ -1,29 +1,44 @@
 package com.seoulapp.withmap.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Pin extends Dto {
-	
+
 	private int id;
-	
-	private String name;
-	
+
+	private Integer userId;
+
+	private String unimprovedName;
+
+	private String improvedName;
+
 	private PinType type;
-	
-	private Double latitude;
-	
-	private Double longitude;
-	
+
+	private double latitude;
+
+	private double longitude;
+
 	private String address;
+
+	private boolean state;
+
+	private int likeCount;
+
+	public int getType() {
+		return type.intValue();
+	}
 	
-	private	String comment;
+	public void setType(int type) {
+		this.type = PinType.valueOf(type);
+	}
 	
-	private int like;
-	
-	private int userId;
 }

@@ -1,0 +1,10 @@
+diff a/src/main/java/com/seoulapp/withmap/model/Pin.java b/src/main/java/com/seoulapp/withmap/model/Pin.java	(rejected hunks)
+@@ -32,7 +32,7 @@
+ 	private boolean state;
+ 
+ 	private int likeCount;
+-
++	
+ 	public int getType() {
+ 		return type.intValue();
+ 	}

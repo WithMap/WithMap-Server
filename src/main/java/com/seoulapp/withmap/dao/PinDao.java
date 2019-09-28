@@ -6,9 +6,11 @@ import com.seoulapp.withmap.model.Pin;
 
 public interface PinDao {
 
-	List<Pin> getAll();
+	List<Pin> getPins(final double latitude, final double longitude, final double radius);
+	List<Pin> getPins(final int userId);
 	Pin get(final int id);
-	void insert(final Pin pin);
+	int insert(final Pin pin);
 	void update(final Pin pin);
+	void updateLikeCount(final int id);
 	void delete(final int id);
 }

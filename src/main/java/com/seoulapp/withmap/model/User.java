@@ -4,6 +4,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 @Data
@@ -11,6 +15,7 @@ public class User {
 	
 	private int id;
 	
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@NotBlank
     @Size(min = 8)
 	private String password;
@@ -25,4 +30,8 @@ public class User {
 	private int year;
 	private char disable;
 	private int point;
+	
+	public boolean matchPassword(String password, PasswordEncoder bCryptPasswordEncoder) {
+        return bCryptPasswordEncoder.matches(password, this.password);
+    }
 }
