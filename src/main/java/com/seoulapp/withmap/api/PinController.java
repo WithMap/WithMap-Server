@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -57,7 +58,8 @@ public class PinController {
 	@ApiOperation(value = "핀 작성하기")
 	@PostMapping()
 	public ResponseEntity<Void> savePin(@RequestHeader("Authorization") String token, @RequestPart @Valid final Pin pin,
-			@RequestPart("files") MultipartFile[] files, @RequestParam Map<String, String> detailContents) throws IOException {
+			@RequestPart(required=false) MultipartFile[] files, @RequestParam(required = false) Map<String, String> detailContents) throws IOException {
+		System.out.println("도착");
 		pinService.savePin(token, pin, files, detailContents);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}

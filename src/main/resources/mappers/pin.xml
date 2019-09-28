@@ -47,6 +47,7 @@
 			, address
 			, state
 			, like_count
+			, comment
 			, crt_date
 			, upd_date
 		) values (
@@ -59,6 +60,7 @@
 			, #{address}
 			, #{state}
 			, #{likeCount}
+			, #{comment}
 			, current_timestamp
 			, current_timestamp
 		)
@@ -74,6 +76,7 @@
 			, unimproved_name = #{unimprovedName}
 			, improved_name = #{improvedName}
 			, state = #{state}
+			, comment = #{comment}
 		WHERE id = #{id}
 	</update>
 	

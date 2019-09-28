@@ -163,18 +163,13 @@ public class PinServiceImpl implements PinService {
 		case CURB:
 		case DIRTROAD:
 		case NARROWROAD:
-			Road road = new Road();
-			road.setId(pin.getId());
-			road.setComment(detailContents.get("comment"));
-
-			roadDao.insert(road);
 			break;
 		case RESTROOM:
 			Restroom restroom = new Restroom();
 
 			restroom.setId(pin.getId());
-			restroom.setUseableTime(detailContents.get("useableTime"));
-			restroom.setDepartmentNumber(detailContents.get("departmentNumber"));
+			restroom.setUseableTime(detailContents.getOrDefault("useableTime", null));
+			restroom.setDepartmentNumber(detailContents.getOrDefault("departmentNumber", null));
 
 			restroomDao.insert(restroom);
 			break;
@@ -182,10 +177,9 @@ public class PinServiceImpl implements PinService {
 			Restaurant restaurant = new Restaurant();
 
 			restaurant.setId(pin.getId());
-			restaurant.setNumber(detailContents.get("number"));
-			restaurant.setSite(detailContents.get("site"));
-			restaurant.setUseableTime(detailContents.get("useableTime"));
-			restaurant.setComment(detailContents.get("comment"));
+			restaurant.setNumber(detailContents.getOrDefault("number", null));
+			restaurant.setSite(detailContents.getOrDefault("site", null));
+			restaurant.setUseableTime(detailContents.getOrDefault("useableTime", null));
 
 			restaurantDao.insert(restaurant);
 			break;
@@ -214,10 +208,6 @@ public class PinServiceImpl implements PinService {
 		case CURB:
 		case DIRTROAD:
 		case NARROWROAD:
-			Road road = roadDao.get(id);
-			road.setComment(detailContents.get("comment"));
-
-			roadDao.update(road);
 			break;
 		case RESTROOM:
 			Restroom restroom = restroomDao.get(id);
@@ -234,7 +224,6 @@ public class PinServiceImpl implements PinService {
 			restaurant.setNumber(detailContents.getOrDefault("number", restaurant.getNumber()));
 			restaurant.setSite(detailContents.getOrDefault("site", restaurant.getSite()));
 			restaurant.setUseableTime(detailContents.getOrDefault("useableTime", restaurant.getUseableTime()));
-			restaurant.setComment(detailContents.getOrDefault("comment", restaurant.getComment()));
 			
 			restaurantDao.update(restaurant);
 			break;

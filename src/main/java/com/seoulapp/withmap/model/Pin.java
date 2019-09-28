@@ -32,6 +32,8 @@ public class Pin extends Dto {
 	private boolean state;
 
 	private int likeCount;
+	
+	private String comment;
 
 	public int getType() {
 		return type.intValue();

@@ -1,7 +1,5 @@
 package com.seoulapp.withmap.service;
 
-import java.util.List;
-
 import com.seoulapp.withmap.model.Overlap;
 import com.seoulapp.withmap.model.Token;
 import com.seoulapp.withmap.model.User;
