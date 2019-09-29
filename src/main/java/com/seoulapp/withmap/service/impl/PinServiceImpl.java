@@ -68,7 +68,7 @@ public class PinServiceImpl implements PinService {
 	@Autowired
 	private RestaurantDao restaurantDao;
 
-	private static final double RADIUS = 0.01;
+	private static final double RADIUS = 300;
 
 	@Override
 	public List<Pin> getPins(final double latitude, final double longitude) {
