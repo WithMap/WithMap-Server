@@ -1,5 +1,7 @@
 package com.seoulapp.withmap.exception;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -49,7 +51,7 @@ public class RestExceptionAdvisor {
 		return exception.entity();
 	}
 
-	@ExceptionHandler(AlreadyExistException.class)
+	@ExceptionHandler({SQLIntegrityConstraintViolationException.class, AlreadyExistException.class})
 	@ResponseStatus(HttpStatus.CONFLICT)
 	public ErrorEntity handleAlreadyExistException(ErrorEntityException exception) {
 		return exception.entity();
